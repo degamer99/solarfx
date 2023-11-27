@@ -234,19 +234,19 @@ const AccountType = () => {
       <h2 className=" text-center">
         Solarfx Trading <span className="text-green-500">Accounts</span>
       </h2>
-      <div>
+      <div className=" grid grid-cols-1 gap-5 place-items-center md:grid-cols-3">
       {
         AccountTypeInfo.map(({InitialDeposit, Leverage, OrderVolume, name, motto, }, index) => {
-          return <ul key={index}>
-            <li>
-              <h3> {name} </h3>
-              <p> {motto} </p>
+          return <ul key={index} className="rounded py-1 w-11/12 m-auto border-solid border-2 border-gray-500">
+            <li className="text-center">
+              <h3 className="font-bold font-sans text-lg"> {name} </h3>
+              <p className="font-bold font-sans text-xl"> {motto} </p>
               <img src="" alt="" />
             </li>
-            <li>Initial Deposit <span className="text-right">{InitialDeposit}</span></li>
-            <li>Order Volume <span className="text-right">{OrderVolume}</span></li>
-            <li>Leverage <span className="text-right">{Leverage}</span></li>
-            <li></li>
+            <li className="bg-gray-200 text-gray-700 flex justify-between text-xl px-3 py-2"><span>Initial Deposit</span> <span className="text-right">{InitialDeposit}</span></li>
+            <li className="flex justify-between text-xl px-3 py-2"><span>Order Volume</span> <span className="text-right ">{OrderVolume}</span></li>
+            <li className="bg-gray-200 text-gray-700 flex justify-between px-3 py-2 text-xl"><span>Leverage</span> <span className="text-right">{Leverage}</span></li>
+            <button className="flex justify-center m-12">Open</button>
 
           </ul>
         })
@@ -282,7 +282,7 @@ export default function Home() {
   return (
     <>
       {/* <Header /> */}
-      {/* <Ticker /> */}
+      <Ticker />
       <MiniChartSection />
       <AccountType />
       <Footer />
