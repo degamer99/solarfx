@@ -192,7 +192,7 @@ const Hero = () => {
 
 const MiniChartSection = () => {
   return (
-    <section className=" grid grid-cols-1 gap-2 place-items-center md:grid-cols-2 lg:grid-cols-4">
+    <section className=" grid grid-cols-1 place-items-center md:grid-cols-2 lg:grid-cols-4">
       <MiniChart />
       <MiniChart />
       <MiniChart />
@@ -241,7 +241,7 @@ const MiniChart = (props) => {
     };
   }, [ref, widgetProps, widgetPropsAny]);
 
-  return <div ref={ref} />;
+  return <div ref={ref} className=" mt-2 "/>;
 };
 
 const AccountType = () => {
@@ -261,7 +261,7 @@ const AccountType = () => {
               <ul
                 key={index}
                 className="rounded-md py-1 w-11/12 m-auto mt-8 border-solid border border-gray-300 shadow-[ 0 0 10px 5px black]"
-                style={{ boxShadow: "inset 0 0 20px #ccc "}}
+                style={{ boxShadow: "inset 0 0 30px #ddddddaa "}}
               >
                 <li className="text-center py-8 ">
                   <h3 className="font-bold font-sans text-2xl text-gray-800">
@@ -272,7 +272,7 @@ const AccountType = () => {
                     {" "}
                     {motto}{" "}
                   </p>
-                <li className=" text-7xl font-bold py-10">{InitialDeposit}</li> 
+                <p className=" text-7xl font-bold py-10">{InitialDeposit}</p> 
                 </li>
                 <li className="bg-gray-200 text-gray-500 flex justify-between text-xl px-6 py-4 font-bold">
                   <span>Initial Deposit</span>{" "}
@@ -286,7 +286,7 @@ const AccountType = () => {
                   <span>Leverage</span>{" "}
                   <span className="text-right">{Leverage}</span>
                 </li>
-                <button className=" py-3 px-10 my-2 block mx-auto bg-green-600 let text-gray-100 rounded-lg font-bold text-xl wor shadow-inner">
+                <button className=" py-3 px-10 my-2 block mx-auto bg-gray-500 text-gray-100 rounded-lg font-bold text-xl wor shadow-inner">
                   Open
                 </button>
               </ul>
@@ -361,7 +361,7 @@ export default function Home() {
 
       <Header state={setOpen} />
       <Ticker />
-      {/* <MiniChartSection /> */}
+      <MiniChartSection />
       <AccountType />
       <PaymentMethods />
       <Footer />
