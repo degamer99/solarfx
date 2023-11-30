@@ -313,10 +313,10 @@ const PaymentMethods = () => {
       <div className=" grid grid-cols-3 place-items-center gap-4">
         {PaymentInfo.map((value, index) => {
           return (
-            <span className="min-w-[6.5rem] h-16 flex items-center justify-center">
+            <span className="min-w-[6.5rem] h-16 flex items-center justify-center" key={index}>
               <Image
                 className=" h-auto"
-                key={index}
+                
                 src={value}
                 alt="My Image"
                 // width={40}
