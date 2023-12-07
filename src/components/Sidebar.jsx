@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { motion } from "framer-motion";
 import AnimatedButton from "../components/AnimBtn";
 import Logo from "./Logo";
@@ -7,7 +8,18 @@ const Sidebar = ({ isOpen, onClose }) => {
     // Handle button click logic
     console.log("Button clicked!");
   };
-  const data =[ "Home"]
+  const data = ["Home"];
+  const router = useRouter();
+
+  const signup = (e) => {
+    e.preventDefault();
+    router.push("/signup");
+  };
+  const signin = (e) => {
+    e.preventDefault();
+    router.push("/signin");
+  };
+
   return (
     <motion.div
       initial={{ x: "100%", boxShadow: "0 0 0" }}
@@ -26,8 +38,10 @@ const Sidebar = ({ isOpen, onClose }) => {
           transition={{ duration: 0.5 }}
           className="logo-container flex flex-row justify-between"
         >
-          <h1 className="logo"><Logo /></h1>
-          <AnimatedButton onClick={onClose} >
+          <h1 className="logo">
+            <Logo />
+          </h1>
+          <AnimatedButton onClick={onClose}>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               height="16"
@@ -43,10 +57,16 @@ const Sidebar = ({ isOpen, onClose }) => {
           </AnimatedButton>
         </motion.div>
         <ul className="nav-links">
-          { data.map( (value, index) => {
-            return<motion.li whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} key={index}>
-            <a href="#about">{value}</a>
-          </motion.li>
+          {data.map((value, index) => {
+            return (
+              <motion.li
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                key={index}
+              >
+                <a href="#about">{value}</a>
+              </motion.li>
+            );
           })}
           <motion.li whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
             <a href="#about">About</a>
@@ -70,12 +90,10 @@ const Sidebar = ({ isOpen, onClose }) => {
           transition={{ duration: 0.5 }}
           className="auth-buttons"
         >
-
           <div className="mt-8 flex justify-between">
-                      <AnimatedButton onClick={handleButtonClick} label="Sign In" />
-                      <AnimatedButton onClick={handleButtonClick} label="Sign Up" />
+            <AnimatedButton onClick={signin} label="Sign In" />
+            <AnimatedButton onClick={signup} label="Sign Up" />
           </div>
-          
         </motion.div>
       </nav>
       {/* Add your sidebar content here */}
