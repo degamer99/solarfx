@@ -59,11 +59,6 @@ const HeroSection = () => {
       }}
     >
       <AnimatePresence>
-        {setInterval(() => {
-          return(<p> what </p>
-
-          )
-        }, 7000)}
         {heroData.map((data, index) => (
           <motion.div
             key={index}
