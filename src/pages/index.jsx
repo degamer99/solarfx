@@ -1,5 +1,6 @@
 import Image from "next/image";
 import React from "react";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import MastercardLogo from "../../public/images/mastercard-logo.webp";
 import NetellerLogo from "../../public/images/neteller-logo.webp";
@@ -22,24 +23,24 @@ import Footer from "../components/Footer";
 
 const AccountTypeInfo = [
   {
-    name: "Standard a/c",
+    name: "Beginner a/c",
     motto: "New Into Trading ....",
     InitialDeposit: " $100",
-    Leverage: "Up to 1:500",
-    OrderVolume: "0.01 - 500 lots",
+    Leverage: "Up to 1:100",
+    OrderVolume: "0.1 - 50 lots",
   },
   {
     name: "Standard a/c",
-    motto: "New Into Trading",
-    InitialDeposit: " $100",
+    motto: "Already Into Trading ....",
+    InitialDeposit: " $500",
     Leverage: "Up to 1:500",
-    OrderVolume: "0.01 - 500 lots",
+    OrderVolume: "0.01 - 200 lots",
   },
   {
-    name: "Standard a/c",
-    motto: "New Into Trading",
-    InitialDeposit: " $100",
-    Leverage: "Up to 1:500",
+    name: "Master a/c",
+    motto: "Expert In Trading ....",
+    InitialDeposit: " $1000",
+    Leverage: "Up to 1:1000",
     OrderVolume: "0.01 - 500 lots",
   },
 ];
@@ -255,6 +256,8 @@ const HeroData = [
 //   );
 // };
 
+const MiniChartData = ["FX:EURUSD", "BITSTAMP:BTCUSD", "NASDAQ:MSFT"]
+
 const MiniChartSection = () => {
   return (
     <section className=" py-5 ">
@@ -267,16 +270,17 @@ const MiniChartSection = () => {
         </h2>
       </div>
       <div className=" grid grid-cols-1 place-items-center md:grid-cols-2 lg:grid-cols-3 my-6">
-        <MiniChart />
-        <MiniChart />
-        <MiniChart />
+      {MiniChartData.map( ( value, index) => {
+        return(<MiniChart  data={value} key={index} />);
+      })}
       </div>
     </section>
   );
 };
 
+
 const MiniChart = (props) => {
-  const { widgetProps, widgetPropsAny } = props;
+  const { widgetProps, widgetPropsAny, data } = props;
 
   const ref = React.createRef();
 
@@ -291,7 +295,7 @@ const MiniChart = (props) => {
       script.async = true;
       script.type = "text/javascript";
       script.innerHTML = JSON.stringify({
-        symbol: "FX:EURUSD",
+        symbol: `${data}`,
         width: 350,
         height: 220,
         locale: "en",
@@ -368,6 +372,7 @@ const GlobalMarkets = () => {
   );
 };
 const AccountType = () => {
+  const router = useRouter();
   return (
     <section className=" bg-[#f5f8f7] py-8">
       <p className=" text-center text-xl font-bold text-gray-400">
@@ -409,7 +414,9 @@ const AccountType = () => {
                   <span>Leverage</span>{" "}
                   <span className="text-right">{Leverage}</span>
                 </li>
-                <button className=" py-3 px-10 my-2 block mx-auto bg-gray-500 text-gray-100 rounded-lg font-bold text-xl wor shadow-inner">
+                <button 
+                onClick={() => router.push("/signup")}
+                className=" py-3 px-10 my-2 block mx-auto bg-gray-500 text-gray-100 rounded-lg font-bold text-xl wor shadow-inner">
                   Open
                 </button>
               </ul>
@@ -583,7 +590,7 @@ export default function Home() {
       <div>
         <Sidebar isOpen={isSidebarOpen} onClose={handleCloseSidebar} />
         <motion.div
-          className="flex-1 flex flex-col overflow-hidden relative z"
+          className="flex-1 flex flex-col relative z"
           initial={{ right: 0, filter: "opacity(1)" }}
           animate={{
             right: isSidebarOpen ? 90 : 0,

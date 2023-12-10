@@ -3,8 +3,11 @@ import SolarLogo from "../../public/images/solarLogo.png";
 import { useRouter } from "next/router";
 import AnimatedButton from "./AnimBtn";
 import Logo from "./Logo";
+import { motion } from "framer-motion";
 
 const Header = ({ onOpen }) => {
+  const data = ["Home", "About", "Trading", "Platforms", "Tools", "Partners"];
+
   const router = useRouter();
 
   const style = {
@@ -22,11 +25,40 @@ const Header = ({ onOpen }) => {
   };
 
   return (
-    <header className="bg-black p-4 flex justify-between">
+    <header className="bg-black px-4 py-2 flex justify-between items-center sticky top-0">
       <Logo />
-      <div className=" max-md:hidden">
-        <AnimatedButton label={"Sign Up"} onClick={signup} cstyle="ml-5"/>
-        <AnimatedButton label={"Sign In"} onClick={signin} cstyle="ml-5"/>
+      <div>
+        <nav>
+          <ul className=" flex justify-between items-center gap-6 max-lg:hidden">
+            {data.map((value, index) => {
+              return (
+                <motion.li
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  key={index}
+                  className="text-gray-200 text-base font-bold flex items-center flex-col "
+                >
+                  <a href="#about">{value}</a>
+                </motion.li>
+              );
+            })}
+          </ul>
+        </nav>
+      </div>
+      <div className=" max-md:hidden">  
+        <AnimatedButton label={"Sign Up"} onClick={signup} cstyle="ml-5" />
+        {/* <AnimatedButton
+          label={"Sign In"}
+          onClick={signin}
+          cstyle="ml-5 bg-[#00000000] text-green-500 border-2 border-green-500"
+        /> */}
+        <motion.button
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            className="  py-3 px-6 rounded-lg ml-5 font-semibold border text-green-500 border-green-500 hover:bg-green-700 focus:outline-none"
+          >
+            Sign In
+          </motion.button>
       </div>
       <button onClick={onOpen} className="text-white md:hidden">
         <svg

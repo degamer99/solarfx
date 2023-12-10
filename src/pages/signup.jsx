@@ -1,97 +1,159 @@
-import { motion } from 'framer-motion';
-import { useState } from 'react';
+import { useState } from "react";
+import { motion } from "framer-motion";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc, collection } from "firebase/firestore";
+import { auth, firestore } from "../components/Firebase";
+import AnimatedButton from "@/components/AnimBtn";
+import PasswordToggle from "@/components/PasswordToggle";
 
-const SignInPage = () => {
-  const [formData, setFormData] = useState({
-    username: '',
-    password: '',
-  });
-
-  const [error, setError] = useState('');
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // Simplified form validation
-    if (!formData.username || !formData.password) {
-      setError('Please fill in all fields.');
-      return;
-    }
-
-    // Perform login logic (not implemented in this example)
-    setError(''); // Clear any previous error
-    console.log('Form submitted:', formData);
-  };
-
+const InputField = ({ label, onChange, value }) => {
   return (
     <motion.div
+      className="mb-4"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
+      exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.5 }}
-      className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-700 to-gray-900 text-white"
     >
-      <div className="max-w-md w-full bg-white p-8 rounded-md shadow-md">
-        <h2 className="text-3xl font-semibold text-gray-800 mb-6">Sign In to Your Account</h2>
-
-        {/* Form for user login */}
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label htmlFor="username" className="block text-gray-600">
-              Username
-            </label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              value={formData.username}
-              onChange={handleInputChange}
-              className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:border-green-500"
-              placeholder="Enter your username"
-              required
-            />
-          </div>
-
-          <div className="mb-6">
-            <label htmlFor="password" className="block text-gray-600">
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              value={formData.password}
-              onChange={handleInputChange}
-              className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:border-green-500"
-              placeholder="Enter your password"
-              required
-            />
-          </div>
-
-          {error && (
-            <p className="text-red-500 mb-4 text-sm">
-              <strong>Error:</strong> {error}
-            </p>
-          )}
-
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-green-500 text-white py-3 px-4 rounded-full font-semibold hover:bg-green-700 focus:outline-none"
-          >
-            Sign In
-          </motion.button>
-        </form>
-      </div>
+      <label className="block text-sm text-gray-600">{label}</label>
+      {label.search("Password") != -1 ? (
+        <PasswordToggle
+          label={value}
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-green-500 transition duration-300"
+        />
+      ) : (
+        <motion.input
+          type="text"
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-green-500 transition duration-300"
+          whileHover={{ scale: 1.02 }}
+          whileFocus={{ scale: 1.02 }}
+        />
+      )}
     </motion.div>
   );
 };
 
-export default SignInPage;
+const SignUpPage = () => {
+  const [step, setStep] = useState(0);
+
+  // Separate state values for each input
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const formInfo = [
+    {
+      PersonalInfo: [
+        { name: "First Name", value: firstName, set: setFirstName },
+        { name: "Last Name", value: lastName, set: setLastName },
+        // "First Name",
+        // "Last Name",
+      ],
+    },
+    {
+      ContactInfo: [
+        { name: "Email Address", value: email, set: setEmail },
+        { name: "Phone Number", value: phoneNumber, set: setPhoneNumber },
+
+        // "Email Address",
+        // "Phone Number",
+      ],
+    },
+    {
+      FinancialInfo: [
+        { name: "Password", value: password, set: setPassword },
+        {
+          name: "Confirm Password",
+          value: confirmPassword,
+          set: setConfirmPassword,
+        },
+        // "Password",
+        // "Confirm Password",
+      ],
+    },
+  ];
+
+  const handleNextStep = () => {
+    setStep(step + 1);
+  };
+
+  const handlePrevStep = () => {
+    setStep(step - 1);
+  };
+
+  const isLastStep = step === formInfo.length - 1;
+
+  const handleSignUp = async (data) => {
+    try {
+      const { user } = await createUserWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      // Store extra data in Firestore
+      const userRef = doc(firestore, "users", user.uid);
+      await setDoc(userRef, data);
+
+      console.log("User signed up:", user);
+    } catch (error) {
+      console.error("Error signing up:", error.message);
+    }
+  };
+
+  const handleFormSubmit = () => {
+    const formData = {
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      password,
+      confirmPassword,
+    };
+    handleSignUp(formData);
+    // Add your logic to handle form submission (e.g., Firebase authentication)
+    console.log("Form submitted:", formData);
+  };
+
+  return (
+    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <motion.div
+        className="max-w-md mx-auto p-6 bg-white rounded-md shadow-md"
+        initial={{ opacity: 0, x: "-100%" }}
+        animate={{ opacity: 1, x: 0 }}
+        exit={{ opacity: 0, x: "100%" }}
+        transition={{ duration: 0.5 }}
+      >
+        <h2 className="text-2xl font-bold mb-4">Step {step + 1}</h2>
+        {formInfo[step][Object.keys(formInfo[step])[0]].map((field, index) => {
+          return (
+            <InputField
+              key={index}
+              label={field.name}
+              value={field.value}
+              onChange={(value) => field.set(value)}
+            />
+          );
+        })}
+        <div className="flex justify-between mt-3 items-center font-bold">
+          {step > 0 && <p onClick={handlePrevStep}> Previous</p>}
+          {!isLastStep && (
+            <AnimatedButton label="Next" onClick={handleNextStep} />
+          )}
+          {isLastStep && (
+            <AnimatedButton label="Submit" onClick={handleFormSubmit} />
+          )}
+        </div>
+      </motion.div>
+    </div>
+  );
+};
+
+export default SignUpPage;

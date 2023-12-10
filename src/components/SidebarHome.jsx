@@ -8,7 +8,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     // Handle button click logic
     console.log("Button clicked!");
   };
-  const data = ["Home", "About", "Trading", "Platforms", "Tools", "Partners"];
+  const data = ["Dashboard", "Deposit", "Withdrawal", "Tools", "Settings"];
   const router = useRouter();
 
   const signup = (e) => {
@@ -76,10 +76,6 @@ const Sidebar = ({ isOpen, onClose }) => {
           transition={{ duration: 0.5 }}
           className="auth-buttons"
         >
-          <div className="mt-8 flex justify-between">
-            <AnimatedButton onClick={signin} label="Sign In" />
-            <AnimatedButton onClick={signup} label="Sign Up" />
-          </div>
         </motion.div>
       </nav>
       {/* Add your sidebar content here */}

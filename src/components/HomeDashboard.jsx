@@ -16,7 +16,8 @@ const HomeDashboard = () => {
       initial="hidden"
       animate="visible"
       variants={containerVariants}
-      className="p-8 bg-green-500 text-white"
+      className="m-8 p-8 rounded-md border-2"
+
     >
       <h2 className="text-4xl font-semibold mb-4">Forex Broker Dashboard</h2>
 
@@ -28,7 +29,7 @@ const HomeDashboard = () => {
         >
           <div className="bg-white p-6 rounded-md shadow-md">
             <h3 className="text-lg font-semibold mb-2">Account Balance</h3>
-            <p className="text-2xl">$100,000</p>
+            <p className="text-2xl">$0</p>
           </div>
         </motion.div>
 
@@ -37,8 +38,8 @@ const HomeDashboard = () => {
           className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/6 p-4"
         >
           <div className="bg-white p-6 rounded-md shadow-md">
-            <h3 className="text-lg font-semibold mb-2">Open Positions</h3>
-            <p className="text-2xl">8</p>
+            <h3 className="text-lg font-semibold mb-2">Total Profits</h3>
+            <p className="text-2xl">$0</p>
           </div>
         </motion.div>
 
@@ -52,15 +53,6 @@ const HomeDashboard = () => {
           </div>
         </motion.div>
 
-        <motion.div
-          variants={itemVariants}
-          className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/6 p-4"
-        >
-          <div className="bg-white p-6 rounded-md shadow-md">
-            <h3 className="text-lg font-semibold mb-2">Analytics</h3>
-            <p className="text-2xl">Performance insights</p>
-          </div>
-        </motion.div>
       </motion.div>
     </motion.div>
   );

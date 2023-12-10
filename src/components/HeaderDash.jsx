@@ -3,9 +3,25 @@ import SolarLogo from "../../public/images/solarLogo.png";
 
 const HeaderDash = ({ onOpen }) => {
   
+  let clickAndHoldTimer;
+
+  const secretFunction = () => {
+    // Replace this with your secret function
+    alert("Secret function activated!");
+  };
+
+  const handleMouseDown = () => {
+    clickAndHoldTimer = setTimeout(() => {
+      secretFunction();
+    }, 10000);
+  };
+
+  const handleMouseUp = () => {
+    clearTimeout(clickAndHoldTimer);
+  };
 
   return (
-    <header className="bg-black p-4 flex justify-between">
+    <header className="bg-black p-4 flex justify-between" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>
     <Image
         style={{ width: "8rem" }}
         // className=" scale-50"

@@ -13,7 +13,7 @@ const AnimatedButton = ({ onClick, label, children, cstyle }) => {
       whileTap="tap"
       variants={buttonVariants}
       onClick={onClick}
-      className={`bg-green-500 text-base ${cstyle} py-3 px-6 rounded-lg font-semibold focus:outline-none`}
+      className={`  bg-green-500 text-base ${cstyle} py-3 px-6 rounded-lg font-semibold focus:outline-none`}
     >
       {label}
       {children}
