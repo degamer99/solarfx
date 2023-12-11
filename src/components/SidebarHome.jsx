@@ -2,13 +2,35 @@ import { useRouter } from "next/router";
 import { motion } from "framer-motion";
 import AnimatedButton from "../components/AnimBtn";
 import Logo from "./Logo";
+import Link from "next/link";
+import { createUserWithEmailAndPassword, signOut } from "firebase/auth";
+import { auth } from "./Firebase";
 
 const Sidebar = ({ isOpen, onClose }) => {
   const handleButtonClick = () => {
     // Handle button click logic
     console.log("Button clicked!");
   };
-  const data = ["Dashboard", "Deposit", "Withdrawal", "Tools", "Settings"];
+  const data = [
+    { name: "Dashboard", to: "/home" },
+    { name: "Deposit", to: "/deposit" },
+    { name: "Withdrawal", to: "/withdraw" },
+    {
+      name: "Logout",
+      to: "",
+      click: async function click() {
+        try {
+          await signOut(auth).then(() => router.push("/"));
+          // Successful logout, you can redirect or perform other actions
+
+          console.log("User logged out successfully!");
+        } catch (error) {
+          console.error("Error logging out:", error.message);
+        }
+        console.log("hello");
+      },
+    },
+  ];
   const router = useRouter();
 
   const signup = (e) => {
@@ -57,7 +79,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           </AnimatedButton>
         </motion.div>
         <ul className="nav-links">
-          {data.map((value, index) => {
+          {data.map(({ name, to, click }, index) => {
             return (
               <motion.li
                 whileHover={{ scale: 1.1 }}
@@ -65,7 +87,10 @@ const Sidebar = ({ isOpen, onClose }) => {
                 key={index}
                 className=" border-b-2 py-4"
               >
-                <a href="#about">{value}</a>
+                <Link href={to} onClick={click}>
+                  {" "}
+                  {name}{" "}
+                </Link>
               </motion.li>
             );
           })}
@@ -75,8 +100,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="auth-buttons"
-        >
-        </motion.div>
+        ></motion.div>
       </nav>
       {/* Add your sidebar content here */}
     </motion.div>

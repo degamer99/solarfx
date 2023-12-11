@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import PasswordToggle from "@/components/PasswordToggle";
 import AnimatedButton from "@/components/AnimBtn";
+import Link from "next/link";
 
 const handleSignUp = async () => {
   try {
@@ -58,6 +59,7 @@ const SignInPage = () => {
   ];
 
   const router = useRouter();
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [formData, setFormData] = useState({
     email: "",
@@ -76,10 +78,14 @@ const SignInPage = () => {
 
   const handleSignIn = async () => {
     try {
+      setErrorMessage("Loading ...");
+
       await signInWithEmailAndPassword(auth, formData.email, formData.password);
       console.log("User signed in");
       router.push("/home");
     } catch (error) {
+      setErrorMessage(error.message);
+
       console.error("Error signing in:", error.message);
     }
   };
@@ -108,9 +114,7 @@ const SignInPage = () => {
       className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-700 to-gray-900 "
     >
       <div className="max-w-md w-full bg-white p-8 rounded-md shadow-md">
-        <h2 className="text-3xl font-semibold text-gray-800 mb-6">
-          Sign In
-        </h2>
+        <h2 className="text-3xl font-semibold text-gray-800 mb-6">Sign In</h2>
 
         {/* Form for user login */}
         <form onSubmit={handleSubmit}>
@@ -135,24 +139,30 @@ const SignInPage = () => {
               Password
             </label>
             <PasswordToggle
-            value={formData.password}
-            id="password"
-            name="password"
-            onChange={handleInputChange}
-            className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:border-green-500"
-            // placeholder="Enter your password"
-            required
-          />
+              value={formData.password}
+              id="password"
+              name="password"
+              onChange={handleInputChange}
+              className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:border-green-500"
+              // placeholder="Enter your password"
+              required
+            />
           </div>
-          
+          {<div className="text-red-500 my-2 ">{errorMessage}</div>}
 
           {error && (
             <p className="text-red-500 mb-4 text-sm">
               <strong>Error:</strong> {error}
             </p>
           )}
-          <AnimatedButton label="Sign In" cstyle="text-white"/>
-          
+          <AnimatedButton label="Sign In" cstyle="text-white" />
+          <p className="text-gray-600 font-bold text-center my-4">
+            Create a new Account:{" "}
+            <Link href={"/signup"} className="text-blue-500 underline">
+              {" "}
+              Signup
+            </Link>
+          </p>
         </form>
       </div>
     </motion.div>

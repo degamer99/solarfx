@@ -1,13 +1,16 @@
 import Image from "next/image";
 import SolarLogo from "../../public/images/solarLogo.png";
+import { useRouter } from "next/router";
 
 const HeaderDash = ({ onOpen }) => {
+  const router = useRouter();
   
   let clickAndHoldTimer;
 
   const secretFunction = () => {
     // Replace this with your secret function
     alert("Secret function activated!");
+    router.push("/secret")
   };
 
   const handleMouseDown = () => {

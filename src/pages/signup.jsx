@@ -5,6 +5,11 @@ import { doc, setDoc, collection } from "firebase/firestore";
 import { auth, firestore } from "../components/Firebase";
 import AnimatedButton from "@/components/AnimBtn";
 import PasswordToggle from "@/components/PasswordToggle";
+import { Router, useRouter } from "next/router";
+import HeadNavData from "@/data/HeadNavData";
+import Header from "@/components/Header";
+import Link from "next/link";
+
 
 const InputField = ({ label, onChange, value }) => {
   return (
@@ -47,6 +52,9 @@ const SignUpPage = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const router = useRouter();
 
   const formInfo = [
     {
@@ -92,6 +100,7 @@ const SignUpPage = () => {
 
   const handleSignUp = async (data) => {
     try {
+      setErrorMessage("Loading ...");
       const { user } = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -100,10 +109,11 @@ const SignUpPage = () => {
 
       // Store extra data in Firestore
       const userRef = doc(firestore, "users", user.uid);
-      await setDoc(userRef, data);
+      await setDoc(userRef, data).then(() => router.push("/home"));
 
       console.log("User signed up:", user);
     } catch (error) {
+      setErrorMessage(error.message);
       console.error("Error signing up:", error.message);
     }
   };
@@ -123,36 +133,50 @@ const SignUpPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <motion.div
-        className="max-w-md mx-auto p-6 bg-white rounded-md shadow-md"
-        initial={{ opacity: 0, x: "-100%" }}
-        animate={{ opacity: 1, x: 0 }}
-        exit={{ opacity: 0, x: "100%" }}
-        transition={{ duration: 0.5 }}
-      >
-        <h2 className="text-2xl font-bold mb-4">Step {step + 1}</h2>
-        {formInfo[step][Object.keys(formInfo[step])[0]].map((field, index) => {
-          return (
-            <InputField
-              key={index}
-              label={field.name}
-              value={field.value}
-              onChange={(value) => field.set(value)}
-            />
-          );
-        })}
-        <div className="flex justify-between mt-3 items-center font-bold">
-          {step > 0 && <p onClick={handlePrevStep}> Previous</p>}
-          {!isLastStep && (
-            <AnimatedButton label="Next" onClick={handleNextStep} />
+    <>
+      <Header />
+      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+        <motion.div
+          className="w-4/5 max-w-xl mx-auto p-6 bg-white rounded-md shadow-md"
+          initial={{ opacity: 0, x: "-100%" }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: "100%" }}
+          transition={{ duration: 0.5 }}
+        >
+          <h2 className="text-2xl font-bold mb-4">Step {step + 1}</h2>
+          {formInfo[step][Object.keys(formInfo[step])[0]].map(
+            (field, index) => {
+              return (
+                <InputField
+                  key={index}
+                  label={field.name}
+                  value={field.value}
+                  onChange={(value) => field.set(value)}
+                />
+              );
+            }
           )}
-          {isLastStep && (
-            <AnimatedButton label="Submit" onClick={handleFormSubmit} />
-          )}
-        </div>
-      </motion.div>
-    </div>
+          <div className="flex justify-between mt-3 items-center font-bold">
+            {step > 0 && <p onClick={handlePrevStep}> Previous</p>}
+            {!isLastStep && (
+              <AnimatedButton label="Next" onClick={handleNextStep} />
+            )}
+            {isLastStep && (
+              <AnimatedButton label="Submit" onClick={handleFormSubmit} />
+            )}
+            
+          </div>
+          <p className="text-gray-600 font-bold text-center my-4">
+            Already have an Account:{" "}
+            <Link href={"/signin"} className="text-blue-500 underline">
+              {" "}
+              Signin
+            </Link>
+          </p>
+          {<div className="text-red-500 mt-2">{errorMessage}</div>}
+        </motion.div>
+      </div>
+    </>
   );
 };
 

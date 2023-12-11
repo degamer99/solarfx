@@ -256,7 +256,7 @@ const HeroData = [
 //   );
 // };
 
-const MiniChartData = ["FX:EURUSD", "BITSTAMP:BTCUSD", "NASDAQ:MSFT"]
+const MiniChartData = ["FX:EURUSD", "BITSTAMP:BTCUSD", "NASDAQ:MSFT"];
 
 const MiniChartSection = () => {
   return (
@@ -270,14 +270,13 @@ const MiniChartSection = () => {
         </h2>
       </div>
       <div className=" grid grid-cols-1 place-items-center md:grid-cols-2 lg:grid-cols-3 my-6">
-      {MiniChartData.map( ( value, index) => {
-        return(<MiniChart  data={value} key={index} />);
-      })}
+        {MiniChartData.map((value, index) => {
+          return <MiniChart data={value} key={index} />;
+        })}
       </div>
     </section>
   );
 };
-
 
 const MiniChart = (props) => {
   const { widgetProps, widgetPropsAny, data } = props;
@@ -373,6 +372,7 @@ const GlobalMarkets = () => {
 };
 const AccountType = () => {
   const router = useRouter();
+  
   return (
     <section className=" bg-[#f5f8f7] py-8">
       <p className=" text-center text-xl font-bold text-gray-400">
@@ -414,9 +414,11 @@ const AccountType = () => {
                   <span>Leverage</span>{" "}
                   <span className="text-right">{Leverage}</span>
                 </li>
-                <button 
-                onClick={() => router.push("/signup")}
-                className=" py-3 px-10 my-2 block mx-auto bg-gray-500 text-gray-100 rounded-lg font-bold text-xl wor shadow-inner">
+                <Link href="/signup"> Open</Link>
+                <button
+                  className=" py-3 px-10 my-2 block mx-auto bg-gray-500 text-gray-100 rounded-lg font-bold text-xl wor shadow-inner"
+                  onClick={() => router.push("/signup")}
+                >
                   Open
                 </button>
               </ul>
@@ -581,9 +583,8 @@ export default function Home() {
 
   const handleButtonClick = () => {
     // Handle button click logic
-    console.log('Button clicked!');
+    console.log("Button clicked!");
   };
-
 
   return (
     <>

@@ -1,38 +1,109 @@
-// pages/deposit.js
-import { motion } from "framer-motion";
+import HeaderDash from "@/components/HeaderDash";
+import PaymentCard from "@/components/PaymentCard";
+import Sidebar from "@/components/SidebarHome";
+import Neteller from "../../public/images/neteller-1.svg";
+import Bitcoin from "../../public/images/binance-logo.svg";
+import Paypal from "../../public/images/paypal-3.svg";
+import SidebarHome from "@/components/SidebarHome";
+import { useState } from "react";
+import MoneyTransactionDialog from "@/components/MoneyTransactionDialog";
 
-const paymentMethods = [
-  {
-    name: "Visa",
-    icon: "/icons/visa.png",
-  },
-  {
-    name: "MasterCard",
-    icon: "/icons/mastercard.png",
-  },
-  // Add more payment methods as needed
-];
+export default function Withdrawal() {
+  const [isSidebarOpen, setSidebarOpen] = useState(false);
 
-const DepositPage = () => {
+  const handleOpenSidebar = () => {
+    setSidebarOpen(true);
+  };
+
+  const handleCloseSidebar = () => {
+    setSidebarOpen(false);
+  };
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const handleOpenDialog = () => {
+    setIsDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+  };
+
+  const handleConfirmTransaction = (transactionData) => {
+    // Handle the confirmed transaction data (e.g., send to the server)
+    console.log("Confirmed Transaction:", transactionData);
+  };
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="max-w-2xl p-8 bg-white shadow-md rounded-md">
-        <h1 className="text-3xl font-bold mb-6">Deposit Funds</h1>
+    <>
+      <HeaderDash onOpen={handleOpenSidebar} />
+      <SidebarHome isOpen={isSidebarOpen} onClose={handleCloseSidebar} />
 
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-          {paymentMethods.map((method, index) => (
-            <motion.div
-              key={index}
-              className="p-4 bg-gray-200 rounded-md flex items-center justify-center cursor-pointer"
-              whileHover={{ scale: 1.05 }}
-            >
-              <img src={method.icon} alt={method.name} className="w-12 h-12" />
-            </motion.div>
-          ))}
+      <main className="w-[95vw] mx-auto my-2 border p-3 rounded-lg">
+        <h1 className="font-bold text-4xl text-gray-700">Deposit</h1>
+        {/* <PaymentCard
+          time="20 days"
+          fee="$200"
+          limit="1 - 10,000 USD"
+          src={Neteller}
+        />
+        <PaymentCard
+          time="20 days"
+          fee="$200"
+          limit="1 - 10,000 USD"
+          src={Bitcoin}
+        />
+        <PaymentCard
+          time="20 days"
+          fee="$200"
+          limit="1 - 10,000 USD"
+          src={Neteller}
+        /> */}
+        <PaymentCard
+          logoSrc={Neteller.src} // Replace with the actual path to Bitcoin logo
+          // system="Neteller"
+          limit="No limit"
+          processingTime="Varies"
+          onClick={handleOpenDialog}
+          fee="Transaction fees may apply"
+        />
+        <PaymentCard
+          logoSrc={Paypal.src} // Replace with the actual path to Bitcoin logo
+          // system="Neteller"
+          limit="No limit"
+          processingTime="Varies"
+          onClick={handleOpenDialog}
+          fee="Transaction fees may apply"
+        />
+        <PaymentCard
+          logoSrc={Bitcoin.src} // Replace with the actual path to Bitcoin logo
+          system="Bitcoin"
+          limit="No limit"
+          processingTime="Varies"
+          onClick={handleOpenDialog}
+          fee="Transaction fees may apply"
+        >
+          <MoneyTransactionDialog
+            isOpen={isDialogOpen}
+            onClose={handleCloseDialog}
+            onConfirm={handleConfirmTransaction}
+          />
+
+        </PaymentCard>
+        <div className="flex items-center justify-center min-h-screen bg-gray-100 hidden">
+          <button
+            onClick={handleOpenDialog}
+            className="bg-green-500 text-white py-2 px-4 rounded-full font-semibold hover:bg-green-600 focus:outline-none"
+          >
+            Open Transaction Dialog
+          </button>
+          <MoneyTransactionDialog
+            isOpen={isDialogOpen}
+            onClose={handleCloseDialog}
+            onConfirm={handleConfirmTransaction}
+          />
         </div>
-      </div>
-    </div>
+      </main>
+    </>
   );
-};
-
-export default DepositPage;
+}

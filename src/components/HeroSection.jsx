@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import Hero1 from "../../public/images/hero1.png";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 const heroData = [
   {
@@ -40,6 +41,7 @@ const HeroSection = () => {
     visible: { opacity: 1, y: 0 },
   };
   const [headData, setHeadData] = useState(0);
+  const router = useRouter();
   return (
     <section
       className="bg-blue-500 text-white h-screen flex flex-col justify-center items-center"
@@ -99,6 +101,7 @@ const HeroSection = () => {
             </motion.p>
 
             <motion.button
+            onClick={() => router.push("/signup")}
               variants={textVariants}
               initial="hidden"
               animate="visible"
