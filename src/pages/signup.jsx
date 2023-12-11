@@ -170,7 +170,7 @@ const SignUpPage = () => {
             Already have an Account:{" "}
             <Link href={"/signin"} className="text-blue-500 underline">
               {" "}
-              Signin
+              Sign in
             </Link>
           </p>
           {<div className="text-red-500 mt-2">{errorMessage}</div>}

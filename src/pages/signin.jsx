@@ -160,7 +160,7 @@ const SignInPage = () => {
             Create a new Account:{" "}
             <Link href={"/signup"} className="text-blue-500 underline">
               {" "}
-              Signup
+              Sign up
             </Link>
           </p>
         </form>

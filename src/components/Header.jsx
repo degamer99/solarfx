@@ -25,7 +25,8 @@ const Header = ({ onOpen }) => {
   };
 
   return (
-    <header className="bg-black px-4 py-2 flex justify-between items-center sticky top-0">
+    <header className=" opacity-90 px-4 py-2 flex justify-between items-center sticky top-0"
+    style={{boxShadow: "inset 0 0 40px 0 #ccc"}}>
       <Logo />
       <div>
         <nav>

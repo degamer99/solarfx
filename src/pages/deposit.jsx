@@ -90,7 +90,7 @@ export default function Withdrawal() {
           />
 
         </PaymentCard>
-        <div className="flex items-center justify-center min-h-screen bg-gray-100 hidden">
+        <div className=" items-center justify-center min-h-screen bg-gray-100 hidden">
           <button
             onClick={handleOpenDialog}
             className="bg-green-500 text-white py-2 px-4 rounded-full font-semibold hover:bg-green-600 focus:outline-none"

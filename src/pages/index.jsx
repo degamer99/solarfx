@@ -322,6 +322,7 @@ const MiniChart = (props) => {
 };
 
 const GlobalMarkets = () => {
+  const router = useRouter()
   return (
     <section className=" bg-[#f5f8f7] py-8">
       <p className=" text-center text-xl font-bold text-gray-400">
@@ -360,7 +361,11 @@ const GlobalMarkets = () => {
                   {p}
                 </p>
               </li>
-              <button className=" py-3 px-10 my-2 block mx-auto bg-gray-600 text-gray-100 rounded-lg font-bold text-xl wor shadow-inner">
+              {/* <Link href="/signup"> Open</Link> */}
+              <button
+                onClick={() => router.push("/signup")}
+                className=" py-3 px-10 my-2 block mx-auto bg-gray-600 text-gray-100 rounded-lg font-bold text-xl wor shadow-inner"
+              >
                 Open
               </button>
             </ul>
@@ -372,7 +377,7 @@ const GlobalMarkets = () => {
 };
 const AccountType = () => {
   const router = useRouter();
-  
+
   return (
     <section className=" bg-[#f5f8f7] py-8">
       <p className=" text-center text-xl font-bold text-gray-400">
@@ -414,7 +419,7 @@ const AccountType = () => {
                   <span>Leverage</span>{" "}
                   <span className="text-right">{Leverage}</span>
                 </li>
-                <Link href="/signup"> Open</Link>
+                {/* <Link href="/signup"> Open</Link> */}
                 <button
                   className=" py-3 px-10 my-2 block mx-auto bg-gray-500 text-gray-100 rounded-lg font-bold text-xl wor shadow-inner"
                   onClick={() => router.push("/signup")}

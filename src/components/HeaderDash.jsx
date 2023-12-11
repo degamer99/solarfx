@@ -1,5 +1,6 @@
 import Image from "next/image";
 import SolarLogo from "../../public/images/solarLogo.png";
+import User from "../../public/images/user-solid.svg";
 import { useRouter } from "next/router";
 
 const HeaderDash = ({ onOpen }) => {
@@ -24,16 +25,9 @@ const HeaderDash = ({ onOpen }) => {
   };
 
   return (
-    <header className="bg-black p-4 flex justify-between" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}>
-    <Image
-        style={{ width: "8rem" }}
-        // className=" scale-50"
-        // style={{ width: "80%" }}
-        src={SolarLogo}
-        alt="My Image"
-        unoptimized
-        // width={40}
-      />
+    <header className="bg-white text-black p-4 flex justify-between" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}
+    style={{boxShadow: "inset 0 0 40px 0 #ccc"}}>
+    
       
       <button onClick={onOpen} className="text-white md:hidden">
         <svg
@@ -51,6 +45,27 @@ const HeaderDash = ({ onOpen }) => {
           />
         </svg>
       </button>
+
+      <Image
+        style={{ width: "8rem" }}
+        // className=" scale-50"
+        // style={{ width: "80%" }}
+        src={SolarLogo}
+        alt="My Image"
+        unoptimized
+        // width={40}
+      />
+      {/* <div></div> */}
+      <Image
+        style={{ width: "2rem" }}
+        // className=" scale-50"
+        // style={{ width: "80%" }}
+        src={User}
+        alt="My Image"
+        unoptimized
+        // width={10}
+        // height={10}
+      />
     </header>
   );
 };

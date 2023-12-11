@@ -28,8 +28,8 @@ const Sidebar = ({ isOpen, onClose }) => {
         boxShadow: isOpen ? "0 0 30px #ddddddaa" : "0 0 0",
       }}
       transition={{ duration: 0.3 }}
-      className="fixed h-full w-64 bg-gray-800 text-white p-4 top-0 right-0 z-10 shado"
-      // style={{ boxShadow: "0 0 30px #ddddddaa " }}
+      className="fixed h-full w-64  text-white bg-black font-bold p-4 top-0 right-0 z-10 shado"
+      style={{ boxShadow: "inset 0 0 30px black " }}
     >
       <nav className="vertical-nav">
         <motion.div

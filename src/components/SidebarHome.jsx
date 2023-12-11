@@ -44,13 +44,13 @@ const Sidebar = ({ isOpen, onClose }) => {
 
   return (
     <motion.div
-      initial={{ x: "100%", boxShadow: "0 0 0" }}
+      initial={{ left: 0, boxShadow: "0 0 0" }}
       animate={{
-        x: isOpen ? 0 : "100%",
+        left: isOpen ? 1 : "-30rem",
         boxShadow: isOpen ? "0 0 30px #ddddddaa" : "0 0 0",
       }}
-      transition={{ duration: 0.3 }}
-      className="fixed h-full w-64 bg-gray-800 text-white p-4 top-0 right-0 z-10 shado"
+      transition={{ duration: 0.4 }}
+      className="fixed h-full w-64 bg-black text-white p-4 top-0 right-0 z-10 font-bold"
       // style={{ boxShadow: "0 0 30px #ddddddaa " }}
     >
       <nav className="vertical-nav">
@@ -86,6 +86,7 @@ const Sidebar = ({ isOpen, onClose }) => {
                 whileTap={{ scale: 0.9 }}
                 key={index}
                 className=" border-b-2 py-4"
+                onClick={() => router.push(to)}
               >
                 <Link href={to} onClick={click}>
                   {" "}
