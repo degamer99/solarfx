@@ -1,8 +1,16 @@
 import { useState, createRef, useEffect } from "react";
+import { auth } from "../components/Firebase"
+import { onAuthStateChanged } from "firebase/auth";
 import { motion } from "framer-motion";
+
 import HeaderDash from "@/components/HeaderDash";
 import HomeDashboard from "@/components/HomeDashboard";
 import SidebarHome from "@/components/SidebarHome";
+import TIcker from "@/components/ticker";
+import CopyrightFooter from "@/components/Copyright";
+import { useRouter } from "next/router";
+import { getFirestore, doc, getDoc, updateDoc} from "firebase/firestore"
+
 
 const Home = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -68,6 +76,69 @@ const Home = () => {
 
     return <div ref={ref} className="mx-auto [&>div]:mx-auto" />;
   };
+  const router = useRouter()
+
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    // Function to retrieve data from Firestore
+    const fetchData = async () => {
+      const firestore = getFirestore(app);
+      const docRef = doc(firestore, 'yourCollection', 'yourDocument'); // Replace with your collection and document names
+
+      try {
+        const docSnap = await getDoc(docRef);
+        if (docSnap.exists()) {
+          setData(docSnap.data());
+        } else {
+          console.log('No such document!');
+        }
+      } catch (error) {
+        console.error('Error getting document:', error);
+      }
+    };
+
+    fetchData();
+  }, []); // Fetch data on component mount
+
+  const updateData = async () => {
+    // Function to update data in Firestore
+    const firestore = getFirestore(app);
+    const docRef = doc(firestore, 'yourCollection', 'yourDocument'); // Replace with your collection and document names
+
+    try {
+      await updateDoc(docRef, {
+        // Update fields as needed
+        field1: 'new value',
+        field2: 'new value',
+        // ...
+      });
+      console.log('Document successfully updated!');
+    } catch (error) {
+      console.error('Error updating document:', error);
+    }
+  };
+
+
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        // User is signed in, see docs for a list of available properties
+        // https://firebase.google.com/docs/reference/js/auth.user
+        const uid = user.uid;
+        console.log("ther is a user")
+        // ...
+      } else {
+        // User is signed out
+        // ...
+        console.log("ther is no user");
+        router.push("/signin")
+      }
+    });
+
+  }, [])
+  
 
   //   <!-- TradingView Widget BEGIN -->
   // <div class="tradingview-widget-container">
@@ -100,8 +171,10 @@ const Home = () => {
     <>
       <HeaderDash onOpen={handleOpenSidebar} />
       <SidebarHome isOpen={isSidebarOpen} onClose={handleCloseSidebar} />
+      <TIcker />
       <HomeDashboard />
       <Heatmap />
+      <CopyrightFooter />
     </>
   );
 };

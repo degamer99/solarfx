@@ -7,6 +7,7 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import PasswordToggle from "@/components/PasswordToggle";
 import AnimatedButton from "@/components/AnimBtn";
 import Link from "next/link";
+import CopyrightFooter from "@/components/Copyright";
 
 const handleSignUp = async () => {
   try {
@@ -82,11 +83,39 @@ const SignInPage = () => {
 
       await signInWithEmailAndPassword(auth, formData.email, formData.password);
       console.log("User signed in");
-      router.push("/home");
+      router.push("/");
     } catch (error) {
-      setErrorMessage(error.message);
+      handleAuthError(error);
 
       console.error("Error signing in:", error.message);
+    }
+  };
+
+  const handleAuthError = (error) => {
+    switch (error.code) {
+      case "auth/email-already-in-use":
+        setErrorMessage(
+          "Email is already in use. Please choose another email."
+        );
+        break;
+      case "auth/invalid-email":
+        setErrorMessage("Invalid email address.");
+        break;
+      case "auth/weak-password":
+        setErrorMessage(
+          "Password is too weak. Please choose a stronger password."
+        );
+        break;
+      case "auth/invalid-credential":
+      case "auth/user-not-found":
+      case "auth/wrong-password":
+        setErrorMessage("Invalid email or password.");
+        break;
+      default:
+        setErrorMessage(
+          "An error occurred during authentication. Please try again later."
+        );
+        break;
     }
   };
 
@@ -111,10 +140,15 @@ const SignInPage = () => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-700 to-gray-900 "
+      className="flex flex-col items-center justify-center min-h-screen bg-gray-100"
+      style={{boxShadow: "0 0 20px #ddddddaa"}}
+      // className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-700 to-gray-900 "
     >
-      <div className="max-w-md w-full bg-white p-8 rounded-md shadow-md">
-        <h2 className="text-3xl font-semibold text-gray-800 mb-6">Sign In</h2>
+      <div className="max-w-md w-full bg-white p-8 rounded-md shadow-md"
+      style={{boxShadow: "0 0 20px #ddddddaa"}}
+      >
+          <h2 className="text-3xl text-center text-gray-800 font-bold mb-4">Sign In to <span className="text-green-500">Quantum Exchange</span></h2>
+        {/* <h2 className="text-3xl font-semibold text-gray-800 mb-6">Sign In</h2> */}
 
         {/* Form for user login */}
         <form onSubmit={handleSubmit}>
@@ -148,10 +182,10 @@ const SignInPage = () => {
               required
             />
           </div>
-          {<div className="text-red-500 my-2 ">{errorMessage}</div>}
+          {<div className="text-black font-bold my-2 ">{errorMessage}</div>}
 
           {error && (
-            <p className="text-red-500 mb-4 text-sm">
+            <p className="text-black font-bold mb-4 text-sm">
               <strong>Error:</strong> {error}
             </p>
           )}
@@ -165,6 +199,7 @@ const SignInPage = () => {
           </p>
         </form>
       </div>
+      <CopyrightFooter />
     </motion.div>
   );
 };

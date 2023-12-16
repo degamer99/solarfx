@@ -20,6 +20,8 @@ import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import HeroSection from "../components/HeroSection";
 import Footer from "../components/Footer";
+import FAQSection from "@/components/faq";
+import AboutUsSection from "@/components/about";
 
 const AccountTypeInfo = [
   {
@@ -260,7 +262,7 @@ const MiniChartData = ["FX:EURUSD", "BITSTAMP:BTCUSD", "NASDAQ:MSFT"];
 
 const MiniChartSection = () => {
   return (
-    <section className=" py-5 ">
+    <section className=" py-5 " id="chart">
       <div className=" px-4">
         <p className=" text-center text-xl font-bold text-gray-400">
           Forex Trading
@@ -318,7 +320,7 @@ const MiniChart = (props) => {
     };
   }, [ref, widgetProps, widgetPropsAny]);
 
-  return <div ref={ref} className=" mt-2 " />;
+  return <div ref={ref} className=" mt-4 " />;
 };
 
 const GlobalMarkets = () => {
@@ -379,7 +381,7 @@ const AccountType = () => {
   const router = useRouter();
 
   return (
-    <section className=" bg-[#f5f8f7] py-8">
+    <section className=" bg-[#f5f8f7] py-8" id="accounts">
       <p className=" text-center text-xl font-bold text-gray-400">
         {" "}
         Account Types{" "}
@@ -437,7 +439,7 @@ const AccountType = () => {
 
 const PaymentMethods = () => {
   return (
-    <section className=" flex justify-between md:flex-row flex-col bg-gray-300 rounded m-4 py-4 px-3">
+    <section className=" flex justify-between md:flex-row flex-col bg-gray-300 rounded m-4 py-4 px-3" id="payments">
       <div>
         <h3 className=" text-3xl font-bold">Your money, Your way</h3>
         <ul className=" grid grid-cols-2">
@@ -616,9 +618,11 @@ export default function Home() {
           <Ticker />
           <HeroSection />
           <GlobalMarkets />
+          <AboutUsSection />
           <MiniChartSection />
           <AccountType />
           <PaymentMethods />
+          <FAQSection />
           <Footer />
         </motion.div>
       </div>

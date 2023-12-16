@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Modal from 'react-modal';
 
-const MoneyTransactionDialog = ({ isOpen, onClose, onConfirm }) => {
+const MoneyTransactionDialog = ({ isOpen, onClose, onConfirm, head, address }) => {
   const [currency, setCurrency] = useState('');
   const [amount, setAmount] = useState('');
 
@@ -23,7 +23,7 @@ const MoneyTransactionDialog = ({ isOpen, onClose, onConfirm }) => {
           <span className='text-3xl'>&times;</span>
         </button>
       </div>
-      <h2 className="text-xl font-semibold mb-4">Money Transaction</h2>
+      <h2 className="text-xl font-semibold mb-4">{head} Transaction</h2>
       {/* <div className="mb-4">
         <label htmlFor="currency" className="block text-gray-700 font-bold mb-2">
           Currency
@@ -53,8 +53,8 @@ const MoneyTransactionDialog = ({ isOpen, onClose, onConfirm }) => {
       <div className='font-bold text-gray-600 '>
         Please sent your amount to the address below and your account will be updated in less than 10 minutes
       </div>
-      <p>
-        
+      <p className=" my-2 py-2 px-4  rounded-lg bg-green-300 font-semibold border-black">
+        {address}
       </p>
       <button
         onClick={handleConfirm}

@@ -5,13 +5,13 @@ import { useRouter } from "next/router";
 
 const HeaderDash = ({ onOpen }) => {
   const router = useRouter();
-  
+
   let clickAndHoldTimer;
 
   const secretFunction = () => {
     // Replace this with your secret function
     alert("Secret function activated!");
-    router.push("/secret")
+    router.push("/secret");
   };
 
   const handleMouseDown = () => {
@@ -25,10 +25,12 @@ const HeaderDash = ({ onOpen }) => {
   };
 
   return (
-    <header className="bg-white text-black p-4 flex justify-between" onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}
-    style={{boxShadow: "inset 0 0 40px 0 #ccc"}}>
-    
-      
+    <header
+      className="bg-gray-600 text-black p-4 flex justify-between"
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      style={{ boxShadow: "inset 0 0 40px 0 #ccc" }}
+    >
       <button onClick={onOpen} className="text-white md:hidden">
         <svg
           width="30"

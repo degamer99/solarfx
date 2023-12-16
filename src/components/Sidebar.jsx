@@ -2,13 +2,24 @@ import { useRouter } from "next/router";
 import { motion } from "framer-motion";
 import AnimatedButton from "../components/AnimBtn";
 import Logo from "./Logo";
+import Link from "next/link";
+import { useRef } from "react";
 
 const Sidebar = ({ isOpen, onClose }) => {
+const linkRef = useRef();
+
   const handleButtonClick = () => {
     // Handle button click logic
     console.log("Button clicked!");
   };
-  const data = ["Home", "About", "Trading", "Platforms", "Tools", "Partners"];
+  const data = [
+    { name: "Home", to: "#home" },
+    { name: "About", to: "#about" },
+    { name: "Accounts", to: "#accounts"},
+    { name: "Payments", to: "#payments"},
+    { name: "Charts", to: "#chart"},
+    { name: "FAQs", to: "#faq"},
+  ];
   const router = useRouter();
 
   const signup = (e) => {
@@ -57,7 +68,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           </AnimatedButton>
         </motion.div>
         <ul className="nav-links">
-          {data.map((value, index) => {
+          {data.map(({ name, to }, index) => {
             return (
               <motion.li
                 whileHover={{ scale: 1.1 }}
@@ -65,7 +76,14 @@ const Sidebar = ({ isOpen, onClose }) => {
                 key={index}
                 className=" border-b-2 py-4"
               >
-                <a href="#about">{value}</a>
+                {/* <p onClick={ () => {
+                  linkRef.current.click();
+                  onClose();
+                }}>{name}</p> */}
+
+                <Link href={to} ref={linkRef} 
+                onClick={onClose}
+                className=""> {name} </Link>
               </motion.li>
             );
           })}

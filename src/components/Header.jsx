@@ -23,14 +23,13 @@ const Header = ({ onOpen }) => {
     e.preventDefault();
     router.push("/signin");
   };
-
   return (
     <header className=" opacity-90 px-4 py-2 flex justify-between items-center sticky top-0"
     style={{boxShadow: "inset 0 0 40px 0 #ccc"}}>
       <Logo />
       <div>
         <nav>
-          <ul className=" flex justify-between items-center gap-6 max-lg:hidden">
+          <ul className=" flex justify-between items-center text-gray-700 gap-6 max-lg:hidden">
             {data.map((value, index) => {
               return (
                 <motion.li
@@ -57,6 +56,7 @@ const Header = ({ onOpen }) => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="  py-3 px-6 rounded-lg ml-5 font-semibold border text-green-500 border-green-500 hover:bg-green-700 focus:outline-none"
+            onClick={signin}
           >
             Sign In
           </motion.button>

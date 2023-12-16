@@ -1,12 +1,14 @@
 import HeaderDash from "@/components/HeaderDash";
 import PaymentCard from "@/components/PaymentCard";
 import Sidebar from "@/components/SidebarHome";
-import Neteller from "../../public/images/neteller-1.svg";
+import Solana from "../../public/images/solana.svg";
+import usdt from "../../public/images/tether-1.svg";
 import Bitcoin from "../../public/images/binance-logo.svg";
 import Paypal from "../../public/images/paypal-3.svg";
 import SidebarHome from "@/components/SidebarHome";
 import { useState } from "react";
 import MoneyTransactionDialog from "@/components/MoneyTransactionDialog";
+import CopyrightFooter from "@/components/Copyright";
 
 export default function Withdrawal() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -60,37 +62,46 @@ export default function Withdrawal() {
           src={Neteller}
         /> */}
         <PaymentCard
-          logoSrc={Neteller.src} // Replace with the actual path to Bitcoin logo
-          // system="Neteller"
-          limit="No limit"
-          processingTime="Varies"
-          onClick={handleOpenDialog}
-          fee="Transaction fees may apply"
-        />
-        <PaymentCard
-          logoSrc={Paypal.src} // Replace with the actual path to Bitcoin logo
-          // system="Neteller"
-          limit="No limit"
-          processingTime="Varies"
-          onClick={handleOpenDialog}
-          fee="Transaction fees may apply"
-        />
-        <PaymentCard
           logoSrc={Bitcoin.src} // Replace with the actual path to Bitcoin logo
           system="Bitcoin"
           limit="No limit"
           processingTime="Varies"
-          onClick={handleOpenDialog}
+          // onClick={handleOpenDialog}
           fee="Transaction fees may apply"
+          address="1CHuyY3Eju1NmRy9b6TAStd8nFnUxyWBSt"
         >
-          <MoneyTransactionDialog
-            isOpen={isDialogOpen}
-            onClose={handleCloseDialog}
-            onConfirm={handleConfirmTransaction}
-          />
 
         </PaymentCard>
-        <div className=" items-center justify-center min-h-screen bg-gray-100 hidden">
+        <PaymentCard
+          logoSrc={Solana.src} // Replace with the actual path to Bitcoin logo
+          system="Solana"
+          limit="No limit"
+          processingTime="Varies"
+          // onClick={handleOpenDialog}
+          fee="Transaction fees may apply"
+          address="2B9EwQ41kc98uR5pyTvTZSffbbL9Wp9recfrTRraBbnT"
+        />
+        <PaymentCard
+          logoSrc={usdt.src} // Replace with the actual path to Bitcoin logo
+          system="USDT"
+          limit="No limit"
+          processingTime="Varies"
+          // onClick={handleOpenDialog}
+          fee="Transaction fees may apply"
+          address="0x36a4b8b6f96e140dd2fa3f0e80e658f487d459fc"
+        />
+        <PaymentCard
+          logoSrc={Paypal.src} // Replace with the actual path to Bitcoin logo
+          // system="Paypal"
+          limit="No limit"
+          processingTime="Varies"
+          // onClick={handleOpenDialog}
+          fee="Transaction fees may apply"
+          address="Currently Unavailable"
+          cstyle={'opacity-20'}
+        />
+        
+        {/* <div className=" items-center justify-center min-h-screen bg-gray-100 hidden">
           <button
             onClick={handleOpenDialog}
             className="bg-green-500 text-white py-2 px-4 rounded-full font-semibold hover:bg-green-600 focus:outline-none"
@@ -102,8 +113,9 @@ export default function Withdrawal() {
             onClose={handleCloseDialog}
             onConfirm={handleConfirmTransaction}
           />
-        </div>
+        </div> */}
       </main>
+      <CopyrightFooter />
     </>
   );
 }

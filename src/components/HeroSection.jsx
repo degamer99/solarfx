@@ -45,6 +45,7 @@ const HeroSection = () => {
   return (
     <section
       className="bg-blue-500 text-white h-screen flex flex-col justify-center items-center"
+      id="home"
       style={{
         // use the src property of the image object
         backgroundImage: `url(${Hero1.src})`,

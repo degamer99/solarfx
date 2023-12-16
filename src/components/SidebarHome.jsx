@@ -15,6 +15,12 @@ const Sidebar = ({ isOpen, onClose }) => {
     { name: "Dashboard", to: "/home" },
     { name: "Deposit", to: "/deposit" },
     { name: "Withdrawal", to: "/withdraw" },
+
+    // Added new idebar menu
+
+    { name: "Account Upgrade", to: "/accountupgrade" },
+    { name: "Profile", to: "/withdraw" },
+    { name: "Settings", to: "/settings" },
     {
       name: "Logout",
       to: "",
@@ -46,7 +52,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     <motion.div
       initial={{ left: 0, boxShadow: "0 0 0" }}
       animate={{
-        left: isOpen ? 1 : "-30rem",
+        left: isOpen ? 0 : "-30rem",
         boxShadow: isOpen ? "0 0 30px #ddddddaa" : "0 0 0",
       }}
       transition={{ duration: 0.4 }}
