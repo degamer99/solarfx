@@ -3,7 +3,7 @@ import PaymentCard from "@/components/PaymentCard";
 import Sidebar from "@/components/SidebarHome";
 import Solana from "../../public/images/solana.svg";
 import usdt from "../../public/images/tether-1.svg";
-import Bitcoin from "../../public/images/binance-logo.svg";
+import Bitcoin from "../../public/images/bitcoin.svg";
 import Paypal from "../../public/images/paypal-3.svg";
 import SidebarHome from "@/components/SidebarHome";
 import { useState } from "react";

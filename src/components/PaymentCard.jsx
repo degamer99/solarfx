@@ -2,6 +2,7 @@
 
 // components/PaymentCard.js
 import { useState } from "react";
+import Image from "next/image";
 import MoneyTransactionDialog from "./MoneyTransactionDialog";
 
 const PaymentCard = ({
@@ -38,7 +39,14 @@ const PaymentCard = ({
         style={{ boxShadow: "0 0 10px 1px #dddddd99" }}
       >
         <div className="flex row gap-3 border-b">
-          <img src={logoSrc} alt={`${system} Logo`} className=" mb-4 h-8" />
+          <Image
+            alt={`${system} Logo`}
+            width={40}
+            height={40}
+            src={logoSrc}
+            className=" mb-4 h-8"
+          />
+          {/* <img src={logoSrc} alt={`${system} Logo`} className=" mb-4 h-8" /> */}
           <h2 className="text-xl font-semibold ">{system}</h2>
         </div>
         <p>

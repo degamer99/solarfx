@@ -1,4 +1,5 @@
 // AboutUsSection.js
+import Image from "next/image";
 import AboutImage from "../../public/images/about.png"
 import React from 'react';
 
@@ -18,11 +19,15 @@ const AboutUsSection = () => {
         <div className="flex flex-col lg:flex-row items-center my-4 lg:items-start">
           <div className="lg:w-1/2 lg:pr-8 mb-6">
             {/* Placeholder for a stock image */}
-            <img
+            {/* <img
               className="w-full h-auto rounded-md shadow-md"
               src={AboutImage.src}
               alt="Company Office"
-            />
+            /> */}
+            <Image 
+            className="w-full h-auto rounded-md shadow-md"
+            src={AboutImage}
+            alt="Company Office"/>
           </div>
           <div className="lg:w-1/2 [&>p]:text-lg">
             <p className="text-gray-700 mb-4">

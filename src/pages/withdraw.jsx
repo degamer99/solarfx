@@ -3,13 +3,12 @@ import PaymentCard from "@/components/PaymentCard";
 import Sidebar from "@/components/SidebarHome";
 import Solana from "../../public/images/solana.svg";
 import Litecoin from "../../public/images/litecoin.svg";
-import Bitcoin from "../../public/images/binance-logo.svg";
+import Bitcoin from "../../public/images/bitcoin.svg";
 import Paypal from "../../public/images/paypal-3.svg";
 import SidebarHome from "@/components/SidebarHome";
 import { useState } from "react";
 import CopyrightFooter from "@/components/Copyright";
 import MoneyTransactionDialog from "@/components/MoneyTransactionDialog";
-
 
 export default function Withdrawal() {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -24,7 +23,6 @@ export default function Withdrawal() {
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
-
   const handleOpenDialog = () => {
     setIsDialogOpen(true);
   };
@@ -37,7 +35,6 @@ export default function Withdrawal() {
     // Handle the confirmed transaction data (e.g., send to the server)
     console.log("Confirmed Transaction:", transactionData);
   };
-
 
   return (
     <>

@@ -182,7 +182,7 @@ const SignUpPage = () => {
           transition={{ duration: 0.5 }}
         >
           <h2 className="text-3xl text-center text-gray-800 font-bold mb-4">Sign up to <span className="text-green-500">Quantum Exchange</span></h2>
-          <p className="text-center font-semibold">Please fill out this form, and we'll send you a welcome email so you can verify your email address and sign in.</p>
+          <p className="text-center font-semibold">Please fill out this form, and we will send you a welcome email so you can verify your email address and sign in.</p>
           <h2 className="text-xl text-gray-600 font-bold mb-4">Step {step + 1}</h2>
           {formInfo[step][Object.keys(formInfo[step])[0]].map(
             (field, index) => {

@@ -22,6 +22,7 @@ import HeroSection from "../components/HeroSection";
 import Footer from "../components/Footer";
 import FAQSection from "@/components/faq";
 import AboutUsSection from "@/components/about";
+import Tidio from "@/components/Tidio";
 
 const AccountTypeInfo = [
   {
@@ -318,7 +319,7 @@ const MiniChart = (props) => {
         }
       }
     };
-  }, [ref, widgetProps, widgetPropsAny]);
+  }, [ref, widgetProps, widgetPropsAny, data]);
 
   return <div ref={ref} className=" mt-4 " />;
 };
@@ -624,6 +625,8 @@ export default function Home() {
           <PaymentMethods />
           <FAQSection />
           <Footer />
+          {/* <Tidio /> */}
+          {/* <Script src="//code.tidio.co/kryrf6lki4rnjdqqopvqtinvjdqko7ms.js" async /> */}
         </motion.div>
       </div>
     </>
