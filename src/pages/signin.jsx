@@ -83,7 +83,7 @@ const SignInPage = () => {
 
       await signInWithEmailAndPassword(auth, formData.email, formData.password);
       console.log("User signed in");
-      router.push("/");
+      router.push("/home");
     } catch (error) {
       handleAuthError(error);
 
