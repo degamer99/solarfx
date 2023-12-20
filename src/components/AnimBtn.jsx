@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { useRouter } from 'next/router';
 
 const AnimatedButton = ({ onClick, label, children, cstyle }) => {
   const buttonVariants = {
@@ -6,6 +7,8 @@ const AnimatedButton = ({ onClick, label, children, cstyle }) => {
     whileTap: { scale: 0.9 },
     tap: { scale: 0.9 },
   };
+
+  const router = useRouter()
 
   return (
     <motion.button

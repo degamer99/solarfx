@@ -39,6 +39,7 @@ const InputField = ({ label, onChange, value }) => {
           className="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-green-500 transition duration-300"
           whileHover={{ scale: 1.02 }}
           whileFocus={{ scale: 1.02 }}
+          required
         />
       )}
     </motion.div>

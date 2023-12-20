@@ -26,7 +26,7 @@ const HeaderDash = ({ onOpen }) => {
 
   return (
     <header
-      className="bg-gray-600 text-black p-4 flex justify-between"
+      className="bg-gray-600 text-black p-4 flex justify-between sticky top-0"
       onMouseDown={handleMouseDown}
       onMouseUp={handleMouseUp}
       style={{ boxShadow: "inset 0 0 40px 0 #ccc" }}

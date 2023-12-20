@@ -1,28 +1,31 @@
 import CopyrightFooter from "@/components/Copyright";
 import HeaderDash from "@/components/HeaderDash";
 import { useRouter } from "next/router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SidebarHome from "@/components/SidebarHome";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth, firestore } from "@/components/Firebase";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 const AccountTypeInfo = [
   {
     name: "Beginner a/c",
     motto: "New Into Trading ....",
-    InitialDeposit: " $100",
+    InitialDeposit: 100,
     Leverage: "Up to 1:100",
     Profits: "25%",
   },
   {
     name: "Standard a/c",
     motto: "Already Into Trading ....",
-    InitialDeposit: " $500",
+    InitialDeposit: 500,
     Leverage: "Up to 1:500",
     Profits: "50%",
   },
   {
     name: "Master a/c",
     motto: "Expert In Trading ....",
-    InitialDeposit: " $1000",
+    InitialDeposit: 1000,
     Leverage: "Up to 1:1000",
     Profits: "75%",
   },
@@ -40,6 +43,34 @@ const AccountUpgrade = () => {
   const handleCloseSidebar = () => {
     setSidebarOpen(false);
   };
+
+  const upgradeAccount = (name, InitialDeposit) => {
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const uid = user.uid;
+        let userData
+        const userRef = doc(firestore, "users", user.uid);
+        await getDoc(userRef).then( (x) => userData = x.data());
+        console.log("data", userData);
+        if (userData.accountBalance >= InitialDeposit) {
+          console.log("enough money");
+          await updateDoc(userRef, { accountLevel: name }).then(() =>
+            router.push("/home")
+          );
+        } else {
+          alert("Not enough account balance to upgrade account");
+        }
+      } else {
+      }
+    });
+    // router.push("/signup")
+  };
+  // useEffect(() =>{
+  //   try {
+  //     onAuthStateChanged((auth))
+  //
+
+  // })
 
   return (
     <>
@@ -74,7 +105,7 @@ const AccountUpgrade = () => {
                       {motto}{" "}
                     </p>
                     <p className=" text-7xl font-bold py-10">
-                      {InitialDeposit}
+                      ${InitialDeposit}
                     </p>
                   </li>
                   <li className="bg-gray-200 text-gray-500 flex justify-between text-xl px-6 py-4 font-bold">
@@ -92,9 +123,9 @@ const AccountUpgrade = () => {
                   {/* <Link href="/signup"> Open</Link> */}
                   <button
                     className=" py-3 px-10 my-2 block mx-auto bg-gray-500 text-gray-100 rounded-lg font-bold text-xl wor shadow-inner"
-                    onClick={() => router.push("/signup")}
+                    onClick={() => upgradeAccount(name, InitialDeposit)}
                   >
-                    Open
+                    Register
                   </button>
                 </ul>
               );

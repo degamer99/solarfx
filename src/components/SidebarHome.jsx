@@ -5,8 +5,32 @@ import Logo from "./Logo";
 import Link from "next/link";
 import { createUserWithEmailAndPassword, signOut } from "firebase/auth";
 import { auth } from "./Firebase";
+import { useState } from "react";
+import CustomModal from "../components/Modal";
 
 const Sidebar = ({ isOpen, onClose }) => {
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const userData = {
+    accountBalance: 300,
+    accountLevel: 'Beginner a/c',
+    Password: 'olayinka2002',
+    email: 'olayinkabello962@gmail.com',
+    firstName: 'Olayinka',
+    lastName: 'Bello',
+    password: 'olayinka2002',
+    phoneNumber: '09039596798',
+    totalProfit: 0,
+  };
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
+
   const handleButtonClick = () => {
     // Handle button click logic
     console.log("Button clicked!");
@@ -19,7 +43,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     // Added new idebar menu
 
     { name: "Account Upgrade", to: "/accountupgrade" },
-    { name: "Profile", to: "/withdraw" },
+    { name: "Profile", to: "#", click: openModal },
     { name: "Settings", to: "/settings" },
     {
       name: "Logout",
@@ -48,6 +72,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     router.push("/signin");
   };
 
+  
   return (
     <motion.div
       initial={{ left: 0, boxShadow: "0 0 0" }}
@@ -109,6 +134,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           className="auth-buttons"
         ></motion.div>
       </nav>
+      <CustomModal isOpen={modalIsOpen} closeModal={closeModal} data={userData} />
       {/* Add your sidebar content here */}
     </motion.div>
   );
