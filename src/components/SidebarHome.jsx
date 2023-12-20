@@ -3,33 +3,36 @@ import { motion } from "framer-motion";
 import AnimatedButton from "../components/AnimBtn";
 import Logo from "./Logo";
 import Link from "next/link";
-import { createUserWithEmailAndPassword, signOut } from "firebase/auth";
-import { auth } from "./Firebase";
+// import { createUserWithEmailAndPassword, signOut } from "firebase/auth";
+import { auth, firestore } from "./Firebase";
 import { useState } from "react";
 import CustomModal from "../components/Modal";
+// import { auth, firestore } from "../components/Firebase";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { doc, setDoc, collection, getDoc } from "firebase/firestore";
 
 const Sidebar = ({ isOpen, onClose }) => {
-
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const userData = {
-    accountBalance: 300,
-    accountLevel: 'Beginner a/c',
-    Password: 'olayinka2002',
-    email: 'olayinkabello962@gmail.com',
-    firstName: 'Olayinka',
-    lastName: 'Bello',
-    password: 'olayinka2002',
-    phoneNumber: '09039596798',
-    totalProfit: 0,
-  };
+  const [userData, setUserData] = useState(null);
+  // const userData = {
+  //   accountBalance: 300,
+  //   accountLevel: 'Beginner a/c',
+  //   Password: 'olayinka2002',
+  //   email: 'olayinkabello962@gmail.com',
+  //   firstName: 'Olayinka',
+  //   lastName: 'Bello',
+  //   password: 'olayinka2002',
+  //   phoneNumber: '09039596798',
+  //   totalProfit: 0,
+  // };
   const openModal = () => {
+    onClose();
     setModalIsOpen(true);
   };
 
   const closeModal = () => {
     setModalIsOpen(false);
   };
-
 
   const handleButtonClick = () => {
     // Handle button click logic
@@ -43,11 +46,50 @@ const Sidebar = ({ isOpen, onClose }) => {
     // Added new idebar menu
 
     { name: "Account Upgrade", to: "/accountupgrade" },
-    { name: "Profile", to: "#", click: openModal },
-    { name: "Settings", to: "/settings" },
+    {
+      name: "Profile",
+      to: "#",
+      click: async function profile() {
+        onAuthStateChanged(auth, async (user) => {
+          if (user) {
+            const userRef = doc(firestore, "users", user.uid);
+            try {
+              await getDoc(userRef)
+                .then((file) => {
+                  let disintergrate = { ...file.data() };
+                  const {
+                    firstName,
+                    lastName,
+                    email,
+                    password,
+                    accountBalance,
+                    accountLevel,
+                    totalProfit,
+                  } = disintergrate;
+                  setUserData({
+                    firstName,
+                    lastName,
+                    email,
+                    password,
+                    accountBalance,
+                    accountLevel,
+                    totalProfit,
+                  });
+                })
+                .then(() => openModal());
+            } catch (error) {
+              console.log(error);
+            }
+          } else {
+            alert("No user logged in");
+          }
+        });
+      },
+    },
+    // { name: "Settings", to: "/settings" },
     {
       name: "Logout",
-      to: "",
+      to: null,
       click: async function click() {
         try {
           await signOut(auth).then(() => router.push("/"));
@@ -57,7 +99,6 @@ const Sidebar = ({ isOpen, onClose }) => {
         } catch (error) {
           console.error("Error logging out:", error.message);
         }
-        console.log("hello");
       },
     },
   ];
@@ -72,10 +113,9 @@ const Sidebar = ({ isOpen, onClose }) => {
     router.push("/signin");
   };
 
-  
   return (
     <motion.div
-      initial={{ left: 0, boxShadow: "0 0 0" }}
+      initial={{ left: "-30rem", boxShadow: "0 0 0" }}
       animate={{
         left: isOpen ? 0 : "-30rem",
         boxShadow: isOpen ? "0 0 30px #ddddddaa" : "0 0 0",
@@ -109,20 +149,26 @@ const Sidebar = ({ isOpen, onClose }) => {
             </svg>
           </AnimatedButton>
         </motion.div>
-        <ul className="nav-links">
+        <ul className="nav-links mt-4 ">
           {data.map(({ name, to, click }, index) => {
             return (
               <motion.li
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
                 key={index}
-                className=" border-b-2 py-4"
+                className=" border-b-2 py-4 px-4"
                 onClick={() => router.push(to)}
               >
-                <Link href={to} onClick={click}>
-                  {" "}
-                  {name}{" "}
-                </Link>
+                {   to != null ?
+                  <Link href={to} onClick={click}>
+                    {name}
+                  </Link>
+      :
+                  <p onClick={click}>
+                    {name}
+                  </p>
+
+                }
               </motion.li>
             );
           })}
@@ -134,7 +180,12 @@ const Sidebar = ({ isOpen, onClose }) => {
           className="auth-buttons"
         ></motion.div>
       </nav>
-      <CustomModal isOpen={modalIsOpen} closeModal={closeModal} data={userData} />
+      <CustomModal
+        isOpen={modalIsOpen}
+        closeModal={closeModal}
+        data={userData}
+        closeSidebar={onClose}
+      />
       {/* Add your sidebar content here */}
     </motion.div>
   );

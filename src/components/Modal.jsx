@@ -4,7 +4,7 @@ import Modal from 'react-modal';
 
 Modal.setAppElement('#__next');
 
-const CustomModal = ({ isOpen, closeModal, data }) => {
+const CustomModal = ({ isOpen, closeModal, data, closeSidebar}) => {
   return (
     <Modal
       isOpen={isOpen}
@@ -14,14 +14,14 @@ const CustomModal = ({ isOpen, closeModal, data }) => {
       <div className="p-6 bg-white rounded shadow-md max-w-md mx-auto">
         <h2 className="text-2xl font-bold mb-4">User Information</h2>
         <form>
-          {Object.entries(data).map(([key, value]) => (
+          {data && Object.entries(data).map(([key, value]) => (
             <div key={key} className="mb-4">
               <label className="block text-gray-700 capitalize font-bold text-lg">{key}</label>
               <div className="bg-gray-100 p-2 rounded">{value}</div>
             </div>
           ))}
         </form>
-        <button onClick={closeModal} className="bg-gray-800 text-white py-2 px-4 rounded mt-4">
+        <button onClick={closeModal} className="bg-gray-800 text-gray-100 font-semibold py-2 px-4 rounded mt-4">
           Close
         </button>
       </div>
@@ -44,8 +44,8 @@ const modalStyles = {
     background: '#fff',
     padding: '20px',
     borderRadius: '8px',
-    height: "600px",
-    maxHeight: "80vh",
+    height: "90vh",
+   // maxHeight: "",
     width: '400px',
     maxWidth: '90%',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',

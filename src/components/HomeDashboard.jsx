@@ -58,7 +58,12 @@ const HomeDashboard = ({ data }) => {
           <div className="bg-white p-6 rounded-md shadow-md">
             <h3 className="text-lg font-semibold mb-2">Total Profits</h3>
             <p className="text-2xl">
-              {data != null ? `$${data.totalProfit}` : "_"}
+              {/* {data != null ? `$${data.totalProfit}` : "_"} */}
+              {data != null
+                ? () => {
+                    return "hello";
+                  }
+                : "_"}
             </p>
           </div>
         </motion.div>
@@ -74,7 +79,7 @@ const HomeDashboard = ({ data }) => {
           </div>
         </motion.div>
 
-        <div className="">
+        <div className="my-2">
           <AnimatedButton label={"Deposit"} onClick={deposit} cstyle="ml-5" />
           {/* <AnimatedButton
             label={"Sign In"}
@@ -84,7 +89,7 @@ const HomeDashboard = ({ data }) => {
           <motion.button
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
-            className="  py-3 px-6 rounded-lg ml-5 font-semibold border text-green-500 border-green-500 hover:bg-green-700 focus:outline-none"
+            className="  py-3 px-6 mt-2 rounded-lg ml-5 font-semibold border text-green-500 border-green-500 hover:bg-green-700 focus:outline-none"
             onClick={() => router.push("/withdraw")}
           >
             Withdraw

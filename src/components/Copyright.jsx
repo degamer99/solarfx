@@ -6,7 +6,7 @@ const CopyrightFooter = () => {
       <footer className="text-center mt-8">
         <hr className="border-t border-gray-300 my-4" />
         <p className="text-sm text-gray-600">
-          &copy; {currentYear} Quantum Exchange. All rights reserved.
+          &copy; {currentYear} Solarfx. All rights reserved.
         </p>
       </footer>
     );

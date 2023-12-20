@@ -197,8 +197,11 @@ const Home = () => {
       <SidebarHome isOpen={isSidebarOpen} onClose={handleCloseSidebar} />
       <TIcker />
       <HomeDashboard data={userData} />
-      <Heatmap />
+      {/* <Heatmap /> */}
+      <div style={{ height: "80vh"}}>
       <TradingViewWidget />
+
+      </div>
       <CopyrightFooter />
     </>
   );

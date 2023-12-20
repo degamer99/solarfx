@@ -5,6 +5,7 @@ import Solana from "../../public/images/solana.svg";
 import Litecoin from "../../public/images/litecoin.svg";
 import Bitcoin from "../../public/images/bitcoin.svg";
 import Paypal from "../../public/images/paypal-3.svg";
+import LocalBank from "../../public/images/localBank.png";
 import SidebarHome from "@/components/SidebarHome";
 import { useState } from "react";
 import CopyrightFooter from "@/components/Copyright";
@@ -61,24 +62,38 @@ export default function Withdrawal() {
           limit="1 - 10,000 USD"
           src={Neteller}
         /> */}
+         <PaymentCard
+          logoSrc={LocalBank.src} // Replace with the actual path to Bitcoin logo
+          system="Local Bank"
+          limit="No limit"
+          Withdrawal={true}
+          // information=["Account Name","Account Number",]
+          processingTime="Varies"
+          // onClick={handleOpenDialog}
+          fee="Transaction fees may apply"
+          cstyle={"opacity-20"}
+        />
         <PaymentCard
           logoSrc={Bitcoin.src} // Replace with the actual path to Bitcoin logo
           system="Bitcoin"
           limit="No limit"
+          Withdrawal={true}
           processingTime="Varies"
           onClick={handleOpenDialog}
           fee="Transaction fees may apply"
         >
-          <MoneyTransactionDialog
+          {/* <MoneyTransactionDialog
             isOpen={isDialogOpen}
             onClose={handleCloseDialog}
             onConfirm={handleConfirmTransaction}
-          />
+          /> */}
         </PaymentCard>
         <PaymentCard
           logoSrc={Solana.src} // Replace with the actual path to Bitcoin logo
           system="Solana"
           limit="No limit"
+          Withdrawal={true}
+          // information={["Account Name","Account Number",]}
           processingTime="Varies"
           onClick={handleOpenDialog}
           fee="Transaction fees may apply"
@@ -87,19 +102,13 @@ export default function Withdrawal() {
           logoSrc={Litecoin.src} // Replace with the actual path to Bitcoin logo
           system="Litecoin"
           limit="No limit"
+          Withdrawal={true}
+          // information={["Account Name","Account Number",]}
           processingTime="Varies"
           onClick={handleOpenDialog}
           fee="Transaction fees may apply"
         />
-        <PaymentCard
-          logoSrc={Paypal.src} // Replace with the actual path to Bitcoin logo
-          // system="Paypal"
-          limit="No limit"
-          processingTime="Varies"
-          // onClick={handleOpenDialog}
-          fee="Transaction fees may apply"
-          cstyle={"opacity-20"}
-        />
+       
 
         <div className=" items-center justify-center min-h-screen bg-gray-100 hidden">
           <button

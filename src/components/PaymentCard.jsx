@@ -14,6 +14,8 @@ const PaymentCard = ({
   onClick,
   cstyle,
   address,
+  information,
+  Withdrawal
 }) => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
@@ -65,6 +67,8 @@ const PaymentCard = ({
         isOpen={isDialogOpen}
         onClose={handleCloseDialog}
         onConfirm={handleConfirmTransaction}
+        information={information}
+        Withdrawal={Withdrawal}
       />
     </>
   );

@@ -46,7 +46,7 @@ const AccountUpgrade = () => {
 
   const upgradeAccount = (name, InitialDeposit) => {
     onAuthStateChanged(auth, async (user) => {
-      if (user) {
+      if ( user ) {
         const uid = user.uid;
         let userData
         const userRef = doc(firestore, "users", user.uid);
@@ -54,13 +54,16 @@ const AccountUpgrade = () => {
         console.log("data", userData);
         if (userData.accountBalance >= InitialDeposit) {
           console.log("enough money");
-          await updateDoc(userRef, { accountLevel: name }).then(() =>
+          const newBalance = userData.accountBalance - InitialDeposit
+          const todaysDate = new Date()
+          await updateDoc(userRef, { accountLevel: name, accountBalance: newBalance, date: todaysDate }).then(() =>
             router.push("/home")
           );
         } else {
           alert("Not enough account balance to upgrade account");
         }
       } else {
+
       }
     });
     // router.push("/signup")
