@@ -141,13 +141,16 @@ const SignInPage = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
       className="flex flex-col items-center justify-center min-h-screen bg-gray-100"
-      style={{boxShadow: "0 0 20px #ddddddaa"}}
+      style={{ boxShadow: "0 0 20px #ddddddaa" }}
       // className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-700 to-gray-900 "
     >
-      <div className="max-w-md w-full bg-white p-8 rounded-md shadow-md"
-      style={{boxShadow: "0 0 20px #ddddddaa"}}
+      <div
+        className="max-w-md w-full bg-white p-8 rounded-md shadow-md"
+        style={{ boxShadow: "0 0 20px #ddddddaa" }}
       >
-          <h2 className="text-3xl text-center text-gray-800 font-bold mb-4">Sign In to <span className="text-green-500">Quantum Exchange</span></h2>
+        <h2 className="text-3xl text-center text-gray-800 font-bold mb-4">
+          Sign In to <span className="text-green-500">Solarfx</span>
+        </h2>
         {/* <h2 className="text-3xl font-semibold text-gray-800 mb-6">Sign In</h2> */}
 
         {/* Form for user login */}

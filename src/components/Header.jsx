@@ -36,7 +36,7 @@ const Header = ({ onOpen }) => {
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.9 }}
                   key={index}
-                  className="text-gray-200 text-base font-bold flex items-center flex-col "
+                  className="text-gray-700 text-base font-bold flex items-center flex-col "
                 >
                   <a href="#about">{value}</a>
                 </motion.li>

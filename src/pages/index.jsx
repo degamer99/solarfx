@@ -8,6 +8,7 @@ import PaypalLogo from "../../public/images/paypal-logo.webp";
 import skrillLogo from "../../public/images/skrill-logo.webp";
 import VisaLogo from "../../public/images/visa-logo.webp";
 import WireLogo from "../../public/images/wiretransfer-logo.webp";
+import bgChart from "../../public/images/chart.png";
 import CandleIcon from "../../public/images/CandleIcon.png";
 import Currency from "../../public/images/currency.webp";
 import Stocks from "../../public/images/stocks.webp";
@@ -263,12 +264,25 @@ const MiniChartData = ["FX:EURUSD", "BITSTAMP:BTCUSD", "NASDAQ:MSFT"];
 
 const MiniChartSection = () => {
   return (
-    <section className=" py-5 " id="chart">
+    <section className=" py-5 " id="chart" style={{
+      // use the src property of the image object
+      backgroundImage: `url(${bgChart.src})`,
+      // other styles
+      backgroundPosition: "center",
+      backgroundSize: "cover",
+      backgroundRepeat: "no-repeat",
+      width: "100%",
+      // height: "100vh",
+
+      // display: "flex",
+      // alignItems: "center",
+      // justifyContent: "center",
+    }}>
       <div className=" px-4">
-        <p className=" text-center text-xl font-bold text-gray-400">
+        <p className=" text-center text-xl font-bold text-gray-300">
           Forex Trading
         </p>
-        <h2 className=" text-center text-5xl text-gray-800 font-bold my-4">
+        <h2 className=" text-center text-5xl text-gray-200 font-bold my-4">
           Top <span className="text-green-500">Pricing</span> List in Market
         </h2>
       </div>

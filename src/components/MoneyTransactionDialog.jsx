@@ -104,7 +104,7 @@ const MoneyTransactionDialog = ({
 
         { Withdrawal ? "The amount entered above will be sent directly to your wallet address" : "Please sent your amount to the address below and your account will be updated in less than 10 minutes"}
         <br />
-        If you need any help, so ensure to contact our customer support
+        If you need any help, do ensure to contact our customer support
       </div>
       {Withdrawal ? <p> </p> :<p className=" my-2 py-2 px-4 overflow-auto text-sm rounded-lg bg-green-300 font-semibold border-black">
         {address}

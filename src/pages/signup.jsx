@@ -125,7 +125,6 @@ const SignUpPage = () => {
     }
   };
 
-  
   const handleAuthError = (error) => {
     switch (error.code) {
       case "auth/email-already-in-use":
@@ -164,7 +163,7 @@ const SignUpPage = () => {
       confirmPassword,
       accountBalance: 0,
       totalProfit: 0,
-      accountLevel: "_"
+      accountLevel: "_",
     };
     handleSignUp(formData);
     // Add your logic to handle form submission (e.g., Firebase authentication)
@@ -182,9 +181,16 @@ const SignUpPage = () => {
           exit={{ opacity: 0, x: "100%" }}
           transition={{ duration: 0.5 }}
         >
-          <h2 className="text-3xl text-center text-gray-800 font-bold mb-4">Sign up to <span className="text-green-500">Quantum Exchange</span></h2>
-          <p className="text-center font-semibold">Please fill out this form, and we will send you a welcome email so you can verify your email address and sign in.</p>
-          <h2 className="text-xl text-gray-600 font-bold mb-4">Step {step + 1}</h2>
+          <h2 className="text-3xl text-center text-gray-800 font-bold mb-4">
+            Sign up to <span className="text-green-500">Solarfx</span>
+          </h2>
+          <p className="text-center font-semibold">
+            Please fill out this form, and we will send you a welcome email so
+            you can verify your email address and sign in.
+          </p>
+          <h2 className="text-xl text-gray-600 font-bold mb-4">
+            Step {step + 1}
+          </h2>
           {formInfo[step][Object.keys(formInfo[step])[0]].map(
             (field, index) => {
               return (

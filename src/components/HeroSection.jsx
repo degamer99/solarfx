@@ -108,7 +108,7 @@ const HeroSection = () => {
               animate="visible"
               exit="hidden"
               transition={{ duration: 0.5, delay: 0.6 }}
-              className="bg-white text-blue-500 py-2 px-4 rounded-full font-semibold hover:bg-blue-700 hover:text-white focus:outline-none"
+              className="bg-white text-green-500 py-2 px-4 rounded-md font-semibold hover:bg-blue-700 hover:text-white focus:outline-none"
             >
               {data.buttonText}
             </motion.button>

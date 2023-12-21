@@ -1,4 +1,6 @@
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
+import Link from "next/link";
+import Logo from "./Logo";
 
 const Footer = () => {
   return (
@@ -11,22 +13,36 @@ const Footer = () => {
       <div className="container mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {/* Column 1 */}
         <div className="mb-4">
-          <h3 className="text-lg font-bold mb-2">About Us</h3>
-          <p>Learn more about our company and mission.</p>
+          <h3 className="text-lg font-bold mb-2"> <Logo />    Solarfx is a top financial services provider, specializing in forex and stock trading. Committed to excellence, we offer a seamless and secure trading experience with cutting-edge technology. Our team provides personalized support and educational resources, empowering clients to make informed decisions. Join Solarfx for financial growth and success.</h3>
         </div>
 
         {/* Column 2 */}
         <div className="mb-4">
           <h3 className="text-lg font-bold mb-2">Quick Links</h3>
-          <ul>
+          <ul className=" list-disc pl-6 [&>li]:underline">
             <li>
-              <a href="#">Home</a>
+              <a href="#home">Home</a>
             </li>
             <li>
-              <a href="#">Services</a>
+              <a href="#about">About</a>
             </li>
             <li>
-              <a href="#">Contact Us</a>
+              <a href="#accounts">Accounts</a>
+            </li>
+            <li>
+              <a href="#payments">Payments</a>
+            </li>
+            <li>
+              <a href="#chart">Charts</a>
+            </li>
+            <li>
+              <a href="#faq">FAQs</a>
+            </li>
+            <li>
+              <Link href="/signin">Signin</Link>
+            </li>
+            <li>
+              <Link href="/signup">Signup</Link>
             </li>
           </ul>
         </div>
