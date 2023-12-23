@@ -12,6 +12,7 @@ import {
 import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, firestore } from "@/components/Firebase";
+import { useRouter } from "next/router";
 // import { doc, getDoc, updateDoc } from "firebase/firestore";
 
 const Secret = () => {
@@ -54,8 +55,43 @@ const Secret = () => {
     // Perform your update logic here
   };
 
-  useEffect(() => {
+  const router = useRouter();
+
+  useEffect( () => {
+    if(!router.isReady) return;
     // const userRef = doc(firestore, "users", user.uid);
+    const getUserAuthInfo = async () => {
+      try {
+        onAuthStateChanged(auth, async (user) => {
+          if (user) {
+            // User is signed in, see docs for a list of available properties
+            // https://firebase.google.com/docs/reference/js/auth.user
+            const uid = user.uid;
+            console.log("ther is a user", uid);
+            if (uid != "fbHlaAd9V5SSp6AamRKW5996tOk1") router.push("/home")
+            // finally {
+            //   if (userData != null && userData.email == "admin@gmail.com") {
+            //     console.log("admin is in control")
+            //     router.push("/secret");
+            //   }
+            // }
+            // ...b
+            console.log("done");
+            // console.log("this is user Data", userData)
+          }else {
+            // User is signed out
+            // ...
+            console.log("ther is no user");
+            router.push("/");
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getUserAuthInfo();
+
     const getAllUserData = async () => {
       const querySnapshot = await getDocs(collection(firestore, "users"));
       querySnapshot.forEach((doc) => {
@@ -68,7 +104,7 @@ const Secret = () => {
       // console.log("all data", AllUserData)
     };
     getAllUserData();
-  }, []);
+  }, [router.isReady]);
 
   return (
     <>

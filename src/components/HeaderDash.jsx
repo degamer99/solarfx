@@ -2,9 +2,27 @@ import Image from "next/image";
 import SolarLogo from "../../public/images/solarLogo.png";
 import User from "../../public/images/user-solid.svg";
 import { useRouter } from "next/router";
+import Sidebar from "./SidebarHome";
+import { useRef } from "react";
+import { useState } from "react";
+import CustomModal from "./Modal";
+import { auth, firestore } from "./Firebase";
+import { doc, getDoc  } from "firebase/firestore";
+import { onAuthStateChanged } from "firebase/auth";
 
 const HeaderDash = ({ onOpen }) => {
   const router = useRouter();
+
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+  const [userData, setUserData] = useState(null);
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
 
   let clickAndHoldTimer;
 
@@ -58,15 +76,60 @@ const HeaderDash = ({ onOpen }) => {
         // width={40}
       />
       {/* <div></div> */}
-      <Image
-        style={{ width: "2rem" }}
-        // className=" scale-50"
-        // style={{ width: "80%" }}
-        src={User}
-        alt="My Image"
-        unoptimized
-        // width={10}
-        // height={10}
+      <button
+        onClick={() =>
+          onAuthStateChanged(auth, async (user) => {
+            if (user) {
+              const userRef = doc(firestore, "users", user.uid);
+              try {
+                await getDoc(userRef)
+                  .then((file) => {
+                    let disintergrate = { ...file.data() };
+                    const {
+                      firstName,
+                      lastName,
+                      email,
+                      password,
+                      accountBalance,
+                      accountLevel,
+                      totalProfit,
+                    } = disintergrate;
+                    setUserData({
+                      firstName,
+                      lastName,
+                      email,
+                      password,
+                      accountBalance,
+                      accountLevel,
+                      totalProfit,
+                    });
+                  })
+                  .then(() => openModal());
+              } catch (error) {
+                console.log(error);
+              }
+            } else {
+              alert("No user logged in");
+            }
+          })
+        }
+      >
+        <Image
+          style={{ width: "2rem" }}
+          // className=" scale-50"
+          // style={{ width: "80%" }}
+          src={User}
+          alt="My Image"
+          unoptimized
+          // width={10}
+          // height={10}
+        />
+      </button>
+      <CustomModal
+        isOpen={modalIsOpen}
+        closeModal={closeModal}
+        data={userData}
+        // closeSidebar={onClose}
       />
     </header>
   );

@@ -10,9 +10,10 @@ import TIcker from "@/components/ticker";
 import CopyrightFooter from "@/components/Copyright";
 import { useRouter } from "next/router";
 // import { getFirestore, doc, getDoc, updateDoc} from "firebase/firestore"
-import { doc, setDoc, collection, getDoc } from "firebase/firestore";
+import { doc, setDoc, collection, getDoc, updateDoc } from "firebase/firestore";
 
 import TradingViewWidget from "../components/TradingVIew";
+
 
 const Home = () => {
   const [isSidebarOpen, setSidebarOpen] = useState(false);
@@ -122,7 +123,10 @@ const Home = () => {
 
   const [userData, setUserData] = useState(null);
 
+
+  
   useEffect(() => {
+    if(!router.isReady) return;
     const getUserAuthInfo = async () => {
       try {
         onAuthStateChanged(auth, async (user) => {
@@ -153,7 +157,7 @@ const Home = () => {
             // User is signed out
             // ...
             console.log("ther is no user");
-            // router.push("/signin");
+            router.push("/signin");
           }
         });
       } catch (error) {
@@ -162,7 +166,25 @@ const Home = () => {
     };
 
     getUserAuthInfo();
-  }, []);
+  }, [router.isReady]);
+
+  
+
+  const upgradeAccount = (profit) => {
+    onAuthStateChanged(auth, async (user) => {
+      if ( user ) {
+        const uid = user.uid;
+        //userData
+        const userRef = doc(firestore, "users", user.uid);
+        const accBal = userData.accountBalance + profit
+        const todaysDate = new Date()
+          await updateDoc(userRef, { totalProfit: profit, accountBalance: accBal, date: todaysDate})   
+        } else {
+
+      }
+    });
+    // router.push("/signup")
+  };
 
   //   <!-- TradingView Widget BEGIN -->
   // <div class="tradingview-widget-container">
@@ -196,7 +218,7 @@ const Home = () => {
       <HeaderDash onOpen={handleOpenSidebar} />
       <SidebarHome isOpen={isSidebarOpen} onClose={handleCloseSidebar} />
       <TIcker />
-      <HomeDashboard data={userData} />
+      <HomeDashboard data={userData} update={upgradeAccount} />
       {/* <Heatmap /> */}
       <div style={{ height: "80vh"}}>
       <TradingViewWidget />

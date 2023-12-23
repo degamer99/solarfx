@@ -163,7 +163,7 @@ const SignUpPage = () => {
       confirmPassword,
       accountBalance: 0,
       totalProfit: 0,
-      accountLevel: "_",
+      accountLevel: "beginner a/c",
     };
     handleSignUp(formData);
     // Add your logic to handle form submission (e.g., Firebase authentication)

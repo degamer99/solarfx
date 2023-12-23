@@ -65,6 +65,7 @@ export default function Withdrawal() {
           logoSrc={Bitcoin.src} // Replace with the actual path to Bitcoin logo
           system="Bitcoin"
           limit="No limit"
+          Withdrawal={false}
           processingTime="Varies"
           // onClick={handleOpenDialog}
           fee="Transaction fees may apply"
@@ -76,6 +77,7 @@ export default function Withdrawal() {
           logoSrc={Solana.src} // Replace with the actual path to Bitcoin logo
           system="Solana"
           limit="No limit"
+          Withdrawal={false}
           processingTime="Varies"
           // onClick={handleOpenDialog}
           fee="Transaction fees may apply"
@@ -85,6 +87,7 @@ export default function Withdrawal() {
           logoSrc={usdt.src} // Replace with the actual path to Bitcoin logo
           system="USDT"
           limit="No limit"
+          Withdrawal={false}
           processingTime="Varies"
           // onClick={handleOpenDialog}
           fee="Transaction fees may apply"
@@ -94,6 +97,7 @@ export default function Withdrawal() {
           logoSrc={Paypal.src} // Replace with the actual path to Bitcoin logo
           // system="Paypal"
           limit="No limit"
+          Withdrawal={false}
           processingTime="Varies"
           // onClick={handleOpenDialog}
           fee="Transaction fees may apply"

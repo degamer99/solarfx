@@ -67,6 +67,7 @@ export default function Withdrawal() {
           system="Local Bank"
           limit="No limit"
           Withdrawal={true}
+
           // information=["Account Name","Account Number",]
           processingTime="Varies"
           // onClick={handleOpenDialog}

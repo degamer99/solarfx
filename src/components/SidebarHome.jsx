@@ -11,7 +11,7 @@ import CustomModal from "../components/Modal";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { doc, setDoc, collection, getDoc } from "firebase/firestore";
 
-const Sidebar = ({ isOpen, onClose }) => {
+const Sidebar = ({ isOpen, onClose, }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [userData, setUserData] = useState(null);
   // const userData = {
@@ -42,6 +42,7 @@ const Sidebar = ({ isOpen, onClose }) => {
     { name: "Dashboard", to: "/home" },
     { name: "Deposit", to: "/deposit" },
     { name: "Withdrawal", to: "/withdraw" },
+    // { name: "Trade", to: "/trade" },
 
     // Added new idebar menu
 
@@ -89,9 +90,10 @@ const Sidebar = ({ isOpen, onClose }) => {
     // { name: "Settings", to: "/settings" },
     {
       name: "Logout",
-      to: null,
-      click: async function click() {
+      to: "#",
+      click: async function click(e) {
         try {
+          e.preventDefault();
           await signOut(auth).then(() => router.push("/"));
           // Successful logout, you can redirect or perform other actions
 
@@ -150,7 +152,7 @@ const Sidebar = ({ isOpen, onClose }) => {
           </AnimatedButton>
         </motion.div>
         <ul className="nav-links mt-4 ">
-          {data.map(({ name, to, click }, index) => {
+          {data.map(({ name, to, click, ref }, index) => {
             return (
               <motion.li
                 whileHover={{ scale: 1.1 }}
@@ -159,14 +161,11 @@ const Sidebar = ({ isOpen, onClose }) => {
                 className=" border-b-2 py-4 px-4"
                 onClick={() => router.push(to)}
               >
-                {   to != null ?
+                {
                   <Link href={to} onClick={click}>
                     {name}
                   </Link>
-      :
-                  <p onClick={click}>
-                    {name}
-                  </p>
+
 
                 }
               </motion.li>
