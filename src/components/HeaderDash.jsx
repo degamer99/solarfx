@@ -92,7 +92,7 @@ const HeaderDash = ({ onOpen }) => {
                       password,
                       accountBalance,
                       accountLevel,
-                      totalProfit,
+              
                     } = disintergrate;
                     setUserData({
                       firstName,
@@ -101,7 +101,7 @@ const HeaderDash = ({ onOpen }) => {
                       password,
                       accountBalance,
                       accountLevel,
-                      totalProfit,
+              
                     });
                   })
                   .then(() => openModal());

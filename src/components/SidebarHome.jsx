@@ -65,7 +65,7 @@ const Sidebar = ({ isOpen, onClose, }) => {
                     password,
                     accountBalance,
                     accountLevel,
-                    totalProfit,
+                  
                   } = disintergrate;
                   setUserData({
                     firstName,
@@ -74,7 +74,7 @@ const Sidebar = ({ isOpen, onClose, }) => {
                     password,
                     accountBalance,
                     accountLevel,
-                    totalProfit,
+                    
                   });
                 })
                 .then(() => openModal());

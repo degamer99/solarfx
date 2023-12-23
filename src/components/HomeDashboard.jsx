@@ -146,7 +146,7 @@ tomorrow.setDate(today.getDate() + 1);
                             // )} days`;
                             conditionText = calculateDaysDifference(data.date).daysDifference * 0.5 * data.accountBalance;
                             if (data.accountBalance >= 1000){
-                          alert("Account Balance Exceeds Account Size \nPlease Upgrade to a Bigger Account i.e Standard a/c or Master a/c")
+                          alert("Account Balance Exceeds Account Size \nPlease Upgrade to a Bigger Account i.e Master a/c")
                           //alert("Account Balance Exceeds Account Size \nPlease Upgrade to a Bigger Account")
                               console.log("more than standard");
                               router.push("/accountupgrade")

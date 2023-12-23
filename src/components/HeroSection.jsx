@@ -96,7 +96,7 @@ const HeroSection = () => {
               animate="visible"
               exit="hidden"
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="text-sm text-center max-w-md mb-8"
+              className=" text-center max-w-md mb-8"
             >
               {data.paragraph}
             </motion.p>
@@ -108,7 +108,7 @@ const HeroSection = () => {
               animate="visible"
               exit="hidden"
               transition={{ duration: 0.5, delay: 0.6 }}
-              className="bg-white text-green-500 py-2 px-4 rounded-md font-semibold hover:bg-blue-700 hover:text-white focus:outline-none"
+              className="bg-green-500 text-gray-100 py-2 px-4 rounded-md font-semibold hover:bg-green-700 hover:text-white focus:outline-none"
             >
               {data.buttonText}
             </motion.button>
