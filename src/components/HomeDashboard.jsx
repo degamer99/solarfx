@@ -31,9 +31,9 @@ const HomeDashboard = ({ data, update }) => {
   const calculateDaysDifference = (endDate) => {
     const today = new Date();
 
-// Create a new date object for tomorrow
-const tomorrow = new Date(today);
-tomorrow.setDate(today.getDate() + 1);
+    // Create a new date object for tomorrow
+    const tomorrow = new Date(today);
+    tomorrow.setDate(today.getDate() + 1);
 
     const currentDate = new Date();
     // const currentDate = tomorrow;
@@ -62,11 +62,16 @@ tomorrow.setDate(today.getDate() + 1);
       percentage,
     });
     const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-    const currentProfit = daysDifference 
+    const currentProfit = daysDifference;
     return { daysDifference, percentageOfDay, normalizedPercentage };
   };
 
-  
+  const calProgress = (balance, limit) => {
+    const fraction = (balance / limit) * 100;
+    const prog = Math.min(100, Math.max(0, fraction));
+
+    return prog;
+  };
 
   // useEffect(() => {
   //   // Call calculateDaysDifference only when the component mounts
@@ -81,7 +86,7 @@ tomorrow.setDate(today.getDate() + 1);
   // }, []);
 
   // let name = data.firstName + " " + data.
-  const [todayProfit, setTodayProfit] = useState(0)
+  const [todayProfit, setTodayProfit] = useState(0);
   return (
     <motion.div
       initial="hidden"
@@ -112,63 +117,9 @@ tomorrow.setDate(today.getDate() + 1);
           className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/6 p-4"
         >
           <div className="bg-white p-6 rounded-md shadow-md">
-            <h3 className="text-lg font-semibold mb-2">Pending Profits</h3>
+            <h3 className="text-lg font-semibold mb-2">Total Profits</h3>
             <p className="text-2xl font-semibold text-gray-500">
-              {/* {data != null ? `$${data.totalProfit}` : "_"} */}
-              {/* {data != null
-                ? () => {
-                    return "hello";
-                  }
-                : "_"} */}
-
-              {data !== null
-                ? (() => {
-                    const accountLevel = data.accountLevel.toLowerCase();
-                    let conditionText = 0;
-                    console.log("the date ", data.date);
-
-                    switch (accountLevel) {
-                      case "beginner a/c":
-                        conditionText = calculateDaysDifference(data.date).daysDifference * 0.25 * data.accountBalance;
-                        if (data.accountBalance >= 500){
-                          alert("Account Balance Exceeds Account Size \nPlease Upgrade to a Bigger Account i.e Standard a/c or Master a/c")
-                          console.log("more than beginner");
-                          router.push("/accountupgrade")
-                          // take him to upgrade and upgrade
-                        }else{
-                          update(conditionText)
-                          return conditionText;
-                        }
-                        break;
-                        case "standard a/c":
-                          // conditionText = `Days since becoming a standard user: ${calculateDaysDifference(
-                            //   data.date
-                            // )} days`;
-                            conditionText = calculateDaysDifference(data.date).daysDifference * 0.5 * data.accountBalance;
-                            if (data.accountBalance >= 1000){
-                          alert("Account Balance Exceeds Account Size \nPlease Upgrade to a Bigger Account i.e Master a/c")
-                          //alert("Account Balance Exceeds Account Size \nPlease Upgrade to a Bigger Account")
-                              console.log("more than standard");
-                              router.push("/accountupgrade")
-                        }else{
-                          update(conditionText)
-                          return conditionText;
-                        }
-                        break;
-                      case "master a/c":
-                        conditionText = calculateDaysDifference(data.date).daysDifference * 0.75 * data.accountBalance;
-                        update(conditionText)
-                        console.log("inside master")
-                       return conditionText;
-                        break;
-                      default:
-                        conditionText = 0;
-                    }
-                    // setTodayProfit(conditionText)
-                    console.log("outside all")
-                     
-                  })()
-                : "_"}
+              {data != null ? `$${data.totalProfit}` : "_"}
             </p>
           </div>
         </motion.div>
@@ -177,18 +128,39 @@ tomorrow.setDate(today.getDate() + 1);
           className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/6 p-2"
         >
           <div className="bg-white p-2 mt-3 rounded-md shadow-md">
-            <h3 className="text-lg font-semibold">Daily Progress</h3>
+            <h3 className="text-lg font-semibold">Trading Progress</h3>
             <div className="text-2xl">
-            {data && (() => {
-                    console.log("daily true")
-                    const {percentageOfDay, normalizedPercentage} = calculateDaysDifference(data.date)
-                    console.log(percentageOfDay, normalizedPercentage)
-                  return <ProgressBar normalizedPercentage={normalizedPercentage} data={data} func={calculateDaysDifference} />
-                })()
-                // 
+              {
+                data &&
+                  (() => {
+                    let percent
+                    switch (data.accountLevel.toLowerCase()) {
+                      case "beginner a/c":
+                       // conditionText = calculateDaysDifference(data.date).daysDifference * 0.25 * data.accountBalance;
+                       percent = calProgress(data.accountBalance, 500);
+                        
+                        break;
+                        case "standard a/c":
+                       percent = calProgress(data.accountBalance, 1000);
+                          
+                        break;
+                      case "master a/c":
+                       percent = calProgress(data.accountBalance, 100000);
+                        
+                        break;
+                      default:
+                        
+                    }
+                    // setTodayProfit(conditionText)
+                    
+                     
+
+                    return <ProgressBar normalizedPercentage={percent} />;
+                  })()
+                //
                 // :
                 // <ProgressBar percentage={undefined} />
-              } 
+              }
             </div>
           </div>
         </motion.div>
@@ -215,9 +187,9 @@ tomorrow.setDate(today.getDate() + 1);
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             className="  py-3 px-6 mt-2 rounded-lg ml-5 font-semibold border text-green-500 border-green-500 hover:bg-green-700 focus:outline-none"
-            onClick={() => router.push("/withdraw")}
+            onClick={() => router.push("/trade")}
           >
-            Withdraw
+            Trade
           </motion.button>
         </div>
         {/* 
@@ -236,3 +208,25 @@ tomorrow.setDate(today.getDate() + 1);
 };
 
 export default HomeDashboard;
+
+{
+  /* {data != null ? `$${data.totalProfit}` : "_"} */
+}
+{
+  /* {data != null
+                ? () => {
+                    return "hello";
+                  }
+                : "_"} */
+}
+
+{
+  /* {data !== null
+                ? (() => {
+                    const accountLevel = data.accountLevel.toLowerCase();
+                    let conditionText = 0;
+                    console.log("the date ", data.date);
+
+                   
+                : "_"} */
+}

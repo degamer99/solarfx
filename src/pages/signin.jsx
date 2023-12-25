@@ -81,9 +81,18 @@ const SignInPage = () => {
     try {
       setErrorMessage("Loading ...");
 
-      await signInWithEmailAndPassword(auth, formData.email, formData.password);
-      console.log("User signed in");
-      router.push("/home");
+      await signInWithEmailAndPassword(
+        auth,
+        formData.email,
+        formData.password
+      ).then((user) => {
+        console.log("User signed in", user, user.user.uid);
+        if (user.user.uid == "fbHlaAd9V5SSp6AamRKW5996tOk1") {
+          router.push("/secret");
+        } else {
+          router.push("/home");
+        }
+      });
     } catch (error) {
       handleAuthError(error);
 

@@ -44,11 +44,9 @@ const Secret = () => {
     const updatedInfo = editedData[index];
     try {
       const userRef = doc(firestore, "users", id);
-       await updateDoc(userRef, updatedInfo).then(() => {
-         console.log('Updated Information:', updatedInfo, id);
-  
-       });
-      
+      await updateDoc(userRef, updatedInfo).then(() => {
+        console.log("Updated Information:", updatedInfo, id);
+      });
     } catch (error) {
       console.log(error);
     }
@@ -57,8 +55,8 @@ const Secret = () => {
 
   const router = useRouter();
 
-  useEffect( () => {
-    if(!router.isReady) return;
+  useEffect(() => {
+    if (!router.isReady) return;
     // const userRef = doc(firestore, "users", user.uid);
     const getUserAuthInfo = async () => {
       try {
@@ -68,7 +66,7 @@ const Secret = () => {
             // https://firebase.google.com/docs/reference/js/auth.user
             const uid = user.uid;
             console.log("ther is a user", uid);
-            if (uid != "fbHlaAd9V5SSp6AamRKW5996tOk1") router.push("/home")
+            if (uid != "fbHlaAd9V5SSp6AamRKW5996tOk1") router.push("/home");
             // finally {
             //   if (userData != null && userData.email == "admin@gmail.com") {
             //     console.log("admin is in control")
@@ -78,7 +76,7 @@ const Secret = () => {
             // ...b
             console.log("done");
             // console.log("this is user Data", userData)
-          }else {
+          } else {
             // User is signed out
             // ...
             console.log("ther is no user");
@@ -95,9 +93,39 @@ const Secret = () => {
     const getAllUserData = async () => {
       const querySnapshot = await getDocs(collection(firestore, "users"));
       querySnapshot.forEach((doc) => {
-        let docData = {...doc.data()}
-        const { firstName, lastName, email, password, accountBalance, accountLevel, totalProfit } = docData
-        setAllUserData((x) => [...x, { id: doc.id, firstName, lastName, email, password, accountBalance, accountLevel, totalProfit}]);
+        let docData = { ...doc.data() };
+        const {
+          firstName,
+          lastName,
+          email,
+          password,
+          accountBalance,
+          tradingAmount,
+          accountLevel,
+          totalProfit,
+          pending,
+          pendingType,
+          pendingAmount,
+          pendingAddress,
+        } = docData;
+        setAllUserData((x) => [
+          ...x,
+          {
+            id: doc.id,
+            firstName,
+            lastName,
+            email,
+            password,
+            accountBalance,
+            tradingAmount,
+            accountLevel,
+            totalProfit,
+            pending,
+            pendingType,
+            pendingAmount,
+            pendingAddress,
+          },
+        ]);
         // doc.data() is never undefined for query doc snapshots
         // console.log(doc.id, " => ", doc.data());
       });
@@ -110,15 +138,17 @@ const Secret = () => {
     <>
       <HeaderDash onOpen={handleOpenSidebar} />
       <SidebarHome isOpen={isSidebarOpen} onClose={handleCloseSidebar} />
-      
+
       {/* {AllUserData.map} */}
       <main className="mt-4">
         {AllUserData.map((item, index) => (
           <section
             key={index}
-            className="bg-white mx-4 rounded p-6 my-8"
-            style={{ boxShadow: "0 0 30px #ddddddaa" }}
-          >
+            className="mx-4  rounded p-6 my-8"
+            style={{ boxShadow: "0 0 30px #ddddddaa", backgroundColor: item.pending == true ? "#ff1111" : "white" }}
+          >{
+            console.log(item)
+          }
             <h2 className="font-bold text-2xl ">User Information</h2>
             <form className="space-y-4">
               {Object.entries(item).map(([key, value]) => (
@@ -131,10 +161,16 @@ const Secret = () => {
                     {key}
                   </label>
                   <input
-                    type={typeof value === "string" ? "text" : "number"}
+                    type={
+                      typeof value === "string"
+                        ? "text"
+                        : typeof value === "boolean"
+                        ? "boolean"
+                        : "number"
+                    }
                     id={key}
                     name={key}
-                    placeholder={value}
+                    placeholder={`${value}`}
                     value={
                       editedData[index]?.[key] === value
                         ? ""

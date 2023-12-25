@@ -15,49 +15,89 @@ const MoneyTransactionDialog = ({
   address,
   information,
   Withdrawal,
+  // amount, 
+  // setAmount,
 }) => {
   const [currency, setCurrency] = useState("");
   const [amount, setAmount] = useState("");
   const [wallet, setWallet] = useState("");
   const [isCopied, setIsCopied] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
   const handleConfirmDeposit = () => {
     // Validate input and perform necessary actions
     onConfirm({ currency, amount });
-    alert("Your deposit is been processed and will finally reflect after the first two (2) confirmations")
+    console.log(amount);
+    upgrading(amount, "deposit")
+    alert(
+      "Your deposit is been processed and will finally reflect after the first two (2) confirmations"
+    );
     //setTimeout(() => {
-     // router.push("/home")
+    // router.push("/home")
     //}, 2);
     onClose();
   };
+
+  const upgrading = async (amount, type, img, address) => {
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        const uid = user.uid;
+        let userData;
+        const userRef = doc(firestore, "users", user.uid);
+        if (type == "deposit"){
+          await updateDoc(userRef, {
+            pending: true,
+            pendingType: type,
+            pendingAmount: amount,
+          });
+
+        }else{
+
+          await updateDoc(userRef, {
+            pending: true,
+            pendingType: type,
+            pendingAmount: amount,
+            pendingAddress: address,
+          });
+        }
+      } else {
+        console.log("no user logged in");
+      }
+    });
+    // router.push("/signup")
+  };
+
   const handleConfirmWithdrawal = () => {
     // Validate input and perform necessary actions
     onConfirm({ currency, amount });
-    alert("Your withdrawal is been processed and will finally reflect on your designated wallet address")
-   withdrawMoney()
+    console.log( amount, wallet)
+    upgrading(amount, "withdraw", "",  wallet )
+    alert(
+      "Your withdrawal is been processed and will finally reflect on your designated wallet address"
+    );
+    withdrawMoney();
     onClose();
   };
 
   const withdrawMoney = () => {
     onAuthStateChanged(auth, async (user) => {
-      if ( user ) {
+      if (user) {
         const uid = user.uid;
-        let userData
+        let userData;
         const userRef = doc(firestore, "users", user.uid);
-        await getDoc(userRef).then( (x) => userData = x.data());
+        await getDoc(userRef).then((x) => (userData = x.data()));
         console.log("data", userData);
         if (userData.accountBalance >= amount) {
           console.log("enough money");
-          const newBalance = userData.accountBalance - amount
-          await updateDoc(userRef, {  accountBalance: newBalance }).then(() =>
+          const newBalance = userData.accountBalance - amount;
+          await updateDoc(userRef, { accountBalance: newBalance }).then(() =>
             router.push("/home")
           );
         } else {
           alert("Insufficient funds");
         }
       } else {
-        alert("no user logged in")
-        router.push("/")
+        alert("no user logged in");
+        router.push("/");
       }
     });
     // router.push("/signup")
@@ -120,81 +160,127 @@ const MoneyTransactionDialog = ({
             required
           />
         </div>
-        {Withdrawal && ( () => {
-        if (head == "Local Bank"){
-        return(<div>
-          <div>
-            <label
-              htmlFor="address"
-              className="block text-gray-700 font-bold my-2"
-            >
-              Account Name
-            </label>
-            <input
-              type="text"
-              id="address"
-              className="w-full p-2 border rounded-md"
-              //value={wallet}
-              //onChange={(e) => setWallet(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="address"
-              className="block text-gray-700 font-bold my-2"
-            >
-              Account Number
-            </label>
-            <input
-              type="text"
-              id="address"
-              className="w-full p-2 border rounded-md"
-             // value={wallet}
-              //onChange={(e) => setWallet(e.target.value)}
-              required
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="address"
-              className="block text-gray-700 font-bold my-2"
-            >
-              Bank Name
-            </label>
-            <input
-              type="text"
-              id="address"
-              className="w-full p-2 border rounded-md"
-              //value={wallet}
-             // onChange={(e) => setWallet(e.target.value)}
-              required
-            />
-          </div>
-          </div>
-          );
-          
-        }else{
-        return(
-          <div>
-            <label
-              htmlFor="address"
-              className="block text-gray-700 font-bold my-2"
-            >
-              Wallet Address
-            </label>
-            <input
-              type="text"
-              id="address"
-              className="w-full p-2 border rounded-md"
-              value={wallet}
-              onChange={(e) => setWallet(e.target.value)}
-              required
-            />
-          </div>);
+        {Withdrawal &&
+          (() => {
+            if (head == "Local Bank") {
+              return (
+                <div>
+                  <div>
+                    <label
+                      htmlFor="address"
+                      className="block text-gray-700 font-bold my-2"
+                    >
+                      Account Name
+                    </label>
+                    <input
+                      type="text"
+                      id="address"
+                      className="w-full p-2 border rounded-md"
+                      //value={wallet}
+                      //onChange={(e) => setWallet(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="address"
+                      className="block text-gray-700 font-bold my-2"
+                    >
+                      Account Number
+                    </label>
+                    <input
+                      type="text"
+                      id="address"
+                      className="w-full p-2 border rounded-md"
+                      // value={wallet}
+                      //onChange={(e) => setWallet(e.target.value)}
+                      required
+                    />
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="address"
+                      className="block text-gray-700 font-bold my-2"
+                    >
+                      Bank Name
+                    </label>
+                    <input
+                      type="text"
+                      id="address"
+                      className="w-full p-2 border rounded-md"
+                      //value={wallet}
+                      // onChange={(e) => setWallet(e.target.value)}
+                      required
+                    />
+                  </div>
+                </div>
+              );
+            } else {
+              return (<div>
 
-        }
-})()}
+              
+                <div>
+                  <label
+                    htmlFor="address"
+                    className="block text-gray-700 font-bold my-2"
+                  >
+                    Fee
+                  </label>
+                  <input
+                    type="text"
+                    id="address"
+                    className="w-full p-2 border rounded-md bg-gray-300"
+                    value={(amount * 0.1).toFixed(1)}
+                   
+                    
+                  / >
+                    <p> Pay the 10% processing fee to instantly withdraw from your account</p>
+                </div>
+                <div className="flex justify-between items-center">
+          <p
+            onClick={handleCopyClick}
+            className="flex justify-between items-center relative my-2 py-2 px-4 overflow-auto text-sm rounded-lg bg-green-300 font-semibold border-black"
+          >
+            {address}
+            {/* <button
+            onClick={handleCopyClick}
+            className=" text-right  ml-4 px-3 py-1 bg-green-600 text-white rounded-md transition-transform transform hover:scale-110 focus:outline-none"
+          >
+           {isCopied ? 'Copied' : 'Copy'}
+          </button> */}
+          </p>
+          <motion.button
+            onClick={handleCopyClick}
+            className={`right-0 ml-2 px-3 py-1 rounded-md focus:outline-none ${
+              isCopied ? "bg-green-600" : "bg-green-500"
+            } text-white`}
+            initial={{ scale: 1 }}
+            animate={{ scale: isCopied ? 1.1 : 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            {isCopied ? "Copied" : "Copy"}
+          </motion.button>
+        </div>
+                <div>
+                  <label
+                    htmlFor="address"
+                    className="block text-gray-700 font-bold my-2"
+                  >
+                   Your Wallet Address
+                  </label>
+                  <input
+                    type="text"
+                    id="address"
+                    className="w-full p-2 border rounded-md"
+                    value={wallet}
+                    onChange={(e) => setWallet(e.target.value)}
+                    required
+                  />
+                </div>
+                </div>
+              );
+            }
+          })()}
 
         {/* {information.map((value, index) => {
           return (
@@ -218,16 +304,16 @@ const MoneyTransactionDialog = ({
         })} */}
       </div>
       <div className="font-bold text-gray-600 ">
-        {!Withdrawal
+        {Withdrawal
           ? "The amount entered above will be sent directly to your wallet address"
-          : "Please sent your amount to the address below and your account will be updated in less than 10 minutes"}
+          : "Please sent your amount to the address above and your account will be updated in less than 10 minutes"}
         <br />
         If you need any help, do ensure to contact our customer support
       </div>
       {Withdrawal ? (
         <div> </div>
       ) : (
-        <div  className="flex justify-between items-center">
+        <div className="flex justify-between items-center">
           <p
             onClick={handleCopyClick}
             className="flex justify-between items-center relative my-2 py-2 px-4 overflow-auto text-sm rounded-lg bg-green-300 font-semibold border-black"
@@ -254,7 +340,9 @@ const MoneyTransactionDialog = ({
         </div>
       )}
       <button
-        onClick={() => Withdrawal ? handleConfirmWithdrawal() : handleConfirmDeposit()}
+        onClick={() =>
+          Withdrawal ? handleConfirmWithdrawal() : handleConfirmDeposit()
+        }
         className="bg-green-500 my-4 text-white py-2 px-4 rounded font-semibold hover:bg-blue-600 focus:outline-none"
       >
         Confirm

@@ -6,6 +6,11 @@ import SidebarHome from "@/components/SidebarHome";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, firestore } from "@/components/Firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
+import Solana from "../../public/images/solana.svg";
+import usdt from "../../public/images/tether-1.svg";
+import Bitcoin from "../../public/images/bitcoin.svg";
+import Paypal from "../../public/images/paypal-3.svg";
+import MoneyTransactionDialog from "@/components/MoneyTransactionDialog";
 
 const AccountTypeInfo = [
   {
@@ -46,24 +51,25 @@ const AccountUpgrade = () => {
 
   const upgradeAccount = (name, InitialDeposit) => {
     onAuthStateChanged(auth, async (user) => {
-      if ( user ) {
+      if (user) {
         const uid = user.uid;
-        let userData
+        let userData;
         const userRef = doc(firestore, "users", user.uid);
-        await getDoc(userRef).then( (x) => userData = x.data());
+        await getDoc(userRef).then((x) => (userData = x.data()));
         console.log("data", userData);
         if (userData.accountBalance >= InitialDeposit) {
           console.log("enough money");
-          const newBalance = userData.accountBalance - InitialDeposit
-          const todaysDate = new Date()
-          await updateDoc(userRef, { accountLevel: name, accountBalance: newBalance, date: todaysDate }).then(() =>
-            router.push("/home")
-          );
+          const newBalance = userData.accountBalance - InitialDeposit;
+          const todaysDate = new Date();
+          await updateDoc(userRef, {
+            accountLevel: name,
+            accountBalance: newBalance,
+            date: todaysDate,
+          }).then(() => router.push("/home"));
         } else {
           alert("Not enough account balance to upgrade account");
         }
       } else {
-
       }
     });
     // router.push("/signup")
@@ -74,6 +80,39 @@ const AccountUpgrade = () => {
   //
 
   // })
+  const [dialogData, setDialogData] = useState({
+    system: "Upgrade by Bitcoin",
+    limit: "No limit",
+    Withdrawal: false,
+    address: "1CHuyY3Eju1NmRy9b6TAStd8nFnUxyWBSt",
+  });
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [amount, setAmount] = useState(0)
+
+  const handleOpenDialog = (cost) => {
+    setDialogData({
+      system: "Upgrade by Bitcoin",
+      limit: "No limit",
+      Withdrawal: false,
+      address: "1CHuyY3Eju1NmRy9b6TAStd8nFnUxyWBSt",
+      amount: cost,
+    })
+
+    setAmount(cost)
+    console.log(dialogData)
+    setIsDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    console.log("done");
+    setIsDialogOpen(false);
+  };
+
+  const handleConfirmTransaction = (transactionData) => {
+    // Handle the confirmed transaction data (e.g., send to the server)
+    console.log("Confirmed Transaction:", transactionData);
+  };
 
   return (
     <>
@@ -126,7 +165,7 @@ const AccountUpgrade = () => {
                   {/* <Link href="/signup"> Open</Link> */}
                   <button
                     className=" py-3 px-10 my-2 block mx-auto bg-gray-500 text-gray-100 rounded-lg font-bold text-xl wor shadow-inner"
-                    onClick={() => upgradeAccount(name, InitialDeposit)}
+                    onClick={() => handleOpenDialog(InitialDeposit)}
                   >
                     Register
                   </button>
@@ -136,6 +175,17 @@ const AccountUpgrade = () => {
           )}
         </div>
       </section>
+      <MoneyTransactionDialog
+        head={dialogData.system}
+        address={dialogData.address}
+        isOpen={isDialogOpen}
+        onClose={handleCloseDialog}
+        onConfirm={handleConfirmTransaction}
+        information={dialogData.information}
+        Withdrawal={dialogData.Withdrawal}
+        amount={amount}
+        setAmount={setAmount}
+      />
       <CopyrightFooter />
     </>
   );

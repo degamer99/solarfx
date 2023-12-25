@@ -203,7 +203,7 @@ const Home = () => {
   //     "AUD",
   //     "CAD",
   //     "NZD",
-  //     "CNY"
+  //     "CNY "
   //   ],
   //   "isTransparent": false,
   //   "colorTheme": "dark",

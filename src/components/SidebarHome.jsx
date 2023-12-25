@@ -11,7 +11,7 @@ import CustomModal from "../components/Modal";
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { doc, setDoc, collection, getDoc } from "firebase/firestore";
 
-const Sidebar = ({ isOpen, onClose, }) => {
+const Sidebar = ({ isOpen, onClose }) => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [userData, setUserData] = useState(null);
   // const userData = {
@@ -39,17 +39,41 @@ const Sidebar = ({ isOpen, onClose, }) => {
     console.log("Button clicked!");
   };
   const data = [
-    { name: "Dashboard", to: "/home" },
-    { name: "Deposit", to: "/deposit" },
-    { name: "Withdrawal", to: "/withdraw" },
-    // { name: "Trade", to: "/trade" },
+    {
+      name: "Dashboard",
+      click: function click() {
+        router.push("/home");
+      },
+    },
+    {
+      name: "Deposit",
+      click: function click() {
+        router.push("/deposit");
+      },
+    },
+    {
+      name: "Withdrawal",
+      click: function click() {
+        router.push("/withdraw");
+      },
+    },
+    {
+      name: "Trade",
+      click: function click() {
+        router.push("/trade");
+      },
+    },
 
     // Added new idebar menu
 
-    { name: "Account Upgrade", to: "/accountupgrade" },
+    {
+      name: "Account Upgrade",
+      click: function click() {
+        router.push("/accountupgrade");
+      },
+    },
     {
       name: "Profile",
-      to: "#",
       click: async function profile() {
         onAuthStateChanged(auth, async (user) => {
           if (user) {
@@ -65,7 +89,6 @@ const Sidebar = ({ isOpen, onClose, }) => {
                     password,
                     accountBalance,
                     accountLevel,
-                  
                   } = disintergrate;
                   setUserData({
                     firstName,
@@ -74,7 +97,6 @@ const Sidebar = ({ isOpen, onClose, }) => {
                     password,
                     accountBalance,
                     accountLevel,
-                    
                   });
                 })
                 .then(() => openModal());
@@ -90,7 +112,6 @@ const Sidebar = ({ isOpen, onClose, }) => {
     // { name: "Settings", to: "/settings" },
     {
       name: "Logout",
-      to: "#",
       click: async function click(e) {
         try {
           e.preventDefault();
@@ -159,15 +180,9 @@ const Sidebar = ({ isOpen, onClose, }) => {
                 whileTap={{ scale: 0.9 }}
                 key={index}
                 className=" border-b-2 py-4 px-4"
-                onClick={() => router.push(to)}
+                onClick={click}
               >
-                {
-                  <Link href={to} onClick={click}>
-                    {name}
-                  </Link>
-
-
-                }
+                <p onClick={click}>{name}</p>
               </motion.li>
             );
           })}
