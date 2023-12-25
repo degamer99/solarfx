@@ -125,6 +125,26 @@ const HomeDashboard = ({ data, update }) => {
         </motion.div>
         <motion.div
           variants={itemVariants}
+          className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/6 p-4"
+        >
+          <div className="bg-white p-6 rounded-md shadow-md">
+            <div className=" flex justify-between">
+              <h3 className="text-lg font-semibold mb-2">Trading Capital:</h3>
+              <p className="text-lg font-semibold text-gray-700">
+                {data != null ? `$${data.tradingAmount}` : "_"}
+              </p>
+            </div>
+            <div className=" flex justify-between">
+              <h3 className="text-lg font-semibold mb-2">Account Level:</h3>
+              <p className="text-lg font-semibold text-gray-700">
+                {data != null ? `${data.accountLevel}` : "_"}
+              </p>
+            </div>
+           
+            </div>
+        </motion.div>
+        <motion.div
+          variants={itemVariants}
           className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/6 p-2"
         >
           <div className="bg-white p-2 mt-3 rounded-md shadow-md">
@@ -164,17 +184,7 @@ const HomeDashboard = ({ data, update }) => {
             </div>
           </div>
         </motion.div>
-        <motion.div
-          variants={itemVariants}
-          className="w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/6 p-4"
-        >
-          <div className="bg-white p-6 rounded-md shadow-md">
-            <h3 className="text-lg font-semibold mb-2">Account Level</h3>
-            <p className="text-2xl font-semibold text-gray-500">
-              {data != null ? `${data.accountLevel}` : "_"}
-            </p>
-          </div>
-        </motion.div>
+        
 
         <div className="my-2">
           <AnimatedButton label={"Deposit"} onClick={deposit} cstyle="ml-5" />

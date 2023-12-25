@@ -9,6 +9,7 @@ import skrillLogo from "../../public/images/skrill-logo.webp";
 import VisaLogo from "../../public/images/visa-logo.webp";
 import WireLogo from "../../public/images/wiretransfer-logo.webp";
 import bgChart from "../../public/images/chart.png";
+import homebtc from "../../public/images/homebtc.png";
 import CandleIcon from "../../public/images/CandleIcon.png";
 import Currency from "../../public/images/currency.webp";
 import Stocks from "../../public/images/stocks.webp";

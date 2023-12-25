@@ -106,6 +106,7 @@ const Secret = () => {
           pending,
           pendingType,
           pendingAmount,
+          pendingtradingAmount,
           pendingAddress,
         } = docData;
         setAllUserData((x) => [
@@ -123,6 +124,7 @@ const Secret = () => {
             pending,
             pendingType,
             pendingAmount,
+            pendingtradingAmount,
             pendingAddress,
           },
         ]);

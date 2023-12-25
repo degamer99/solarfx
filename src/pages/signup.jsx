@@ -164,6 +164,7 @@ const SignUpPage = () => {
       accountBalance: 0,
       totalProfit: 0,
       accountLevel: "beginner a/c",
+      tradingAmount: 0
     };
     handleSignUp(formData);
     // Add your logic to handle form submission (e.g., Firebase authentication)

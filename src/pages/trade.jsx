@@ -2,13 +2,18 @@ import CopyrightFooter from "@/components/Copyright";
 import HeaderDash from "@/components/HeaderDash";
 import Sidebar from "@/components/SidebarHome";
 import Ticker from "@/components/ticker";
-import { useState, useEffect } from "react";
+import { useState, useEffect, createRef, useMemo} from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { firestore, auth } from "@/components/Firebase";
 import { data } from "autoprefixer";
+import { useRouter } from "next/router";
+
+
+
 
 export default function Trade() {
+  const router = useRouter();
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
@@ -58,7 +63,7 @@ export default function Trade() {
         const userRef = doc(firestore, "users", user.uid);
 
         await updateDoc(userRef, {
-          tradingAmount,
+          pendingtradingAmount: tradingAmount,
           accountBalance: accBal,
         });
       } else {
@@ -83,15 +88,24 @@ export default function Trade() {
 
   const handleTrade = () => {
     // Perform your trade logic using accountBalance and tradeAmount
-    upgrading(tradeAmount, userData.accountBalance);
-    const newAccountBalance = userData.accountBalance - tradeAmount;
-    console.log(
-      `Trade Executed: Account Balance after trade - $${newAccountBalance}`
-    );
+  if(tradeAmount > userData.accountBalance){
+    alert("Insufficient Balance \nPlease deposit more funds")
+    return
+  }
 
-    alert(
-      `Trade Executed: Account Balance after trade - $${newAccountBalance}`
-    );
+    upgrading(tradeAmount, userData.accountBalance).then(() => {
+      const newAccountBalance = userData.accountBalance - tradeAmount;
+      console.log(
+        `Trade Executed: Account Balance after trade:  $${newAccountBalance}`
+      );
+  
+      alert(
+        `Trade Executed: Account Balance after trade: $${newAccountBalance}`
+      );
+        router.push("/home")
+    });
+    
+    // window.location.reload()
 
     // You can further update state, send API requests, or perform any necessary actions here
   };
@@ -100,8 +114,8 @@ export default function Trade() {
     <>
       <HeaderDash onOpen={handleOpenSidebar} />
       <Sidebar isOpen={isSidebarOpen} onClose={handleCloseSidebar} />
-      <Ticker />
-      <main className="w-[95vw] mx-auto my-2 border p-3 rounded-lg">
+      {/* <Ticker /> */}
+      <main className="w-[95vw] mx-auto my-12 border p-3 rounded-lg">
         <h1 className="font-bold text-4xl text-gray-700">Trade</h1>
         <div>
           <form className="max-w-md mx-auto mt-8 p-8 bg-white rounded-md shadow-md">
