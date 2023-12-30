@@ -149,7 +149,7 @@ const CollapsibleDataSection = ({ data, id, name, }) => {
               if (key == "pendingImage") {
                 console.log(key, value);
                 if (value == undefined) {
-                  return <div> </div>;
+                  return <div key={key}> </div>;
                 } else {
                   return (
                     <Link
