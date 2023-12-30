@@ -13,9 +13,17 @@ import { useEffect, useState } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth, firestore } from "@/components/Firebase";
 import { useRouter } from "next/router";
+import CollapsibleDataSection from "@/components/CollapsibleSection";
+import React, { useRef } from 'react';
+import emailjs from '@emailjs/browser';
 // import { doc, getDoc, updateDoc } from "firebase/firestore";
 
+
 const Secret = () => {
+  const [AllUserData, setAllUserData] = useState([]);
+
+  const [editedData, setEditedData] = useState([]);
+
   const [isSidebarOpen, setSidebarOpen] = useState(false);
 
   const handleOpenSidebar = () => {
@@ -26,10 +34,8 @@ const Secret = () => {
     setSidebarOpen(false);
   };
 
-  const [AllUserData, setAllUserData] = useState([]);
-  const [editedData, setEditedData] = useState([]);
-
   const handleInputChange = (index, key, value, ogvalue) => {
+    console.log("handling input change");
     const newData = [...editedData];
     if (value == "") {
       newData[index] = { ...newData[index], [key]: ogvalue };
@@ -42,14 +48,15 @@ const Secret = () => {
   const handleUpdate = async (index, id) => {
     // You can use the edited data in the 'editedData' state
     const updatedInfo = editedData[index];
-    try {
-      const userRef = doc(firestore, "users", id);
-      await updateDoc(userRef, updatedInfo).then(() => {
-        console.log("Updated Information:", updatedInfo, id);
-      });
-    } catch (error) {
-      console.log(error);
-    }
+    console.log(updatedInfo);
+    // try {
+    //   const userRef = doc(firestore, "users", id);
+    //   await updateDoc(userRef, updatedInfo).then(() => {
+    //     console.log("Updated Information:", updatedInfo, id);
+    //   });
+    // } catch (error) {
+    //   console.log(error);
+    // }
     // Perform your update logic here
   };
 
@@ -93,7 +100,8 @@ const Secret = () => {
     const getAllUserData = async () => {
       const querySnapshot = await getDocs(collection(firestore, "users"));
       querySnapshot.forEach((doc) => {
-        let docData = { ...doc.data() };
+        // console.log(doc.id)
+        let docData = { ...doc.data(), id: doc.id };
         const {
           firstName,
           lastName,
@@ -108,25 +116,37 @@ const Secret = () => {
           pendingAmount,
           pendingtradingAmount,
           pendingAddress,
+          pendingImage,
+          id
         } = docData;
+        // // // const data ={
+        //   // logins: {email, password}
+        //   AccountInformation: {accountBalance, accountLevel, tradingAmount, totalProfit}
+        //   Pending: { pending, pendingType, pendingAmount, pendingAddress}
+        //   SendEmail:
+        // // }
         setAllUserData((x) => [
-          ...x,
-          {
-            id: doc.id,
-            firstName,
-            lastName,
-            email,
-            password,
-            accountBalance,
-            tradingAmount,
-            accountLevel,
-            totalProfit,
-            pending,
-            pendingType,
-            pendingAmount,
-            pendingtradingAmount,
-            pendingAddress,
-          },
+          ...x,[ firstName, lastName,{
+            Logins: { email, password },
+            AccountInformation: {
+              accountBalance,
+              accountLevel,
+              tradingAmount,
+              totalProfit,
+            },
+            Pending: {
+              pending,
+              pendingType,
+              pendingAmount,
+              pendingAddress,
+              pendingImage
+            },
+            SendEmail: {
+              CustomizeDefault: "type your message"
+
+              // Your email data here
+            },
+          }, id],
         ]);
         // doc.data() is never undefined for query doc snapshots
         // console.log(doc.id, " => ", doc.data());
@@ -135,6 +155,34 @@ const Secret = () => {
     };
     getAllUserData();
   }, [router.isReady]);
+
+
+
+  const Field = ({ name, value, key, editedData, index }) => {
+    return (
+      <div>
+        <label
+          htmlFor={name}
+          className="block capitalize font-semibold text-lg mt-3 text-gray-700"
+        >
+          {name}:
+        </label>
+        <input
+          type="text"
+          id={name}
+          name={name}
+          value={
+            editedData[index]?.[key] === value ? "" : editedData[index]?.[key]
+          }
+          // value={value}
+          onChange={(e) => handleInputChange(index, key, e.target.value, value)}
+          // onChange={onChange}
+          className="w-full px-3 py-2 border rounded font-semibold focus:outline-none focus:ring focus:border-blue-300"
+          readOnly
+        />
+      </div>
+    );
+  };
 
   return (
     <>
@@ -147,78 +195,17 @@ const Secret = () => {
           <section
             key={index}
             className="mx-4  rounded p-6 my-8"
-            style={{ boxShadow: "0 0 30px #ddddddaa", backgroundColor: item.pending == true ? "#ff1111" : "white" }}
-          >{
-            console.log(item)
-          }
-            <h2 className="font-bold text-2xl ">User Information</h2>
-            <form className="space-y-4">
-              {Object.entries(item).map(([key, value]) => (
-                <div key={key}>
-                  {}
-                  <label
-                    htmlFor={key}
-                    className="block capitalize font-semibold text-lg mt-3 text-gray-700"
-                  >
-                    {key}
-                  </label>
-                  <input
-                    type={
-                      typeof value === "string"
-                        ? "text"
-                        : typeof value === "boolean"
-                        ? "boolean"
-                        : "number"
-                    }
-                    id={key}
-                    name={key}
-                    placeholder={`${value}`}
-                    value={
-                      editedData[index]?.[key] === value
-                        ? ""
-                        : editedData[index]?.[key]
-                    }
-                    onChange={(e) =>
-                      handleInputChange(index, key, e.target.value, value)
-                    }
-                    className="w-full px-3 py-2 border rounded font-semibold focus:outline-none focus:ring focus:border-blue-300"
-                    readOnly={key == "id"}
-                  />
-                </div>
-              ))}
-              <button
-                type="button"
-                onClick={() => handleUpdate(index, item.id)}
-                className="px-4 py-2 bg-green-500 rounded-lg font-semibold text-white"
-              >
-                Update
-              </button>
-            </form>
-          </section>
-        ))}
-        {/* {AllUserData.map((item, index) => (
-          <section key={index} className="bg-white mx-4 rounded p-6 my-8"
-          style={{boxShadow: "0 0 30px #ddddddaa"}}>
-            <h2 className="font-bold text-2xl ">User Information</h2>
-            <form className="space-y-4">
-              {Object.entries(item).map(([key, value]) => (
-                <div key={key}>
-                  <label htmlFor={key} className="block capitalize font-semibold text-lg mt-3 text-gray-700">{key}</label>
-                  <input
-                    type={typeof value === 'string' ? 'text' : 'number'}
-                    id={key}
-                    name={key}
-                    defaultValue={value}
-                    onChange={}
-                    className="w-full px-3 py-2 border rounded focus:outline-none focus:ring focus:border-blue-300"
-                    // readOnly
-                  />
-                </div>
-              ))}
-              <button className="px-4 py-2 bg-green-500 rounded-lg font-semibold text-gray-400"> Update </button>
-            </form>
-          </section>
-        ))} */}
+            style={{
+              boxShadow: "0 0 30px #ddddddaa",
+              backgroundColor: "white",
+            }}
+          >
+            {/* {console.log(item)} */}
+            <h2 className="font-bold text-2xl mb-8">
+              User: {item[0] + " " + item[1]}
+            </h2>
+            <CollapsibleDataSection data={item[2]} id={item[3]} name={item[0] + " " + item[1]} />
+            </section>))}
       </main>
       <CopyrightFooter />
     </>

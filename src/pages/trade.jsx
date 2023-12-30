@@ -63,7 +63,7 @@ export default function Trade() {
         const userRef = doc(firestore, "users", user.uid);
 
         await updateDoc(userRef, {
-          pendingtradingAmount: tradingAmount,
+          tradingAmount,
           accountBalance: accBal,
         });
       } else {

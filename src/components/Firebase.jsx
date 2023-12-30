@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getAuth } from 'firebase/auth';
 import { getFirestore } from 'firebase/firestore';
+import { getStorage, ref, uploadBytes, getDownloadURL, get} from "firebase/storage";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -24,5 +25,25 @@ const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 const auth = getAuth(app);
 const firestore = getFirestore(app);
+const storage = getStorage(app);
 
-export { auth, firestore };
+const storageRef = ref(storage);
+
+const confirmRef = ref(storage, 'confirm');
+
+const upload = async (file, name) => {
+  uploadBytes(ref(confirmRef, name ), file).then( async (snapshot) => {
+
+  console.log('Uploaded a blob or file!');
+  let link = await getDownloadURL(ref(confirmRef, name ))
+  console.log(link)
+    return link
+});
+}
+
+const download = async (name) => { 
+ let link = await getDownloadURL(ref(confirmRef, name ))
+ return link
+}
+
+export { auth, firestore, storage, upload,download };
