@@ -2,15 +2,12 @@ import CopyrightFooter from "@/components/Copyright";
 import HeaderDash from "@/components/HeaderDash";
 import Sidebar from "@/components/SidebarHome";
 import Ticker from "@/components/ticker";
-import { useState, useEffect, createRef, useMemo} from "react";
+import { useState, useEffect, createRef, useMemo } from "react";
 import { onAuthStateChanged } from "firebase/auth";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { firestore, auth } from "@/components/Firebase";
 import { data } from "autoprefixer";
 import { useRouter } from "next/router";
-
-
-
 
 export default function Trade() {
   const router = useRouter();
@@ -61,11 +58,14 @@ export default function Trade() {
         const uid = user.uid;
         let accBal = balance - tradingAmount;
         const userRef = doc(firestore, "users", user.uid);
-
-        await updateDoc(userRef, {
-          tradingAmount,
-          accountBalance: accBal,
-        }).then(() => console.log("trade has been changed "));
+        try {
+          await updateDoc(userRef, {
+            tradingAmount,
+            accountBalance: accBal,
+          }).then(() => console.log("trade has been changed "));
+        } catch (error) {
+          console.log(error);
+        }
       } else {
         console.log("no user logged in");
       }
@@ -88,23 +88,23 @@ export default function Trade() {
 
   const handleTrade = async () => {
     // Perform your trade logic using accountBalance and tradeAmount
-  if(tradeAmount > userData.accountBalance){
-    alert("Insufficient Balance \nPlease deposit more funds")
-    return
-  }
+    if (tradeAmount > userData.accountBalance) {
+      alert("Insufficient Balance \nPlease deposit more funds");
+      return;
+    }
 
-   await upgrading(tradeAmount, userData.accountBalance).then(() => {
+    await upgrading(tradeAmount, userData.accountBalance).then(() => {
       const newAccountBalance = userData.accountBalance - tradeAmount;
       console.log(
         `Trade Executed: Account Balance after trade:  $${newAccountBalance}`
       );
-  
+
       alert(
         `Trade Executed: Account Balance after trade: $${newAccountBalance}`
       );
-        router.push("/home")
+      router.push("/home");
     });
-    
+
     // window.location.reload()
 
     // You can further update state, send API requests, or perform any necessary actions here
