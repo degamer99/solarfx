@@ -65,7 +65,7 @@ export default function Trade() {
         await updateDoc(userRef, {
           tradingAmount,
           accountBalance: accBal,
-        });
+        }).then(() => console.log("trade has been changed "));
       } else {
         console.log("no user logged in");
       }
