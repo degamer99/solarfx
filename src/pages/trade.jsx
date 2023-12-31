@@ -86,14 +86,14 @@ export default function Trade() {
   const [accountBalance, setAccountBalance] = useState(1000); // Replace with your actual account balance
   const [tradeAmount, setTradeAmount] = useState(0);
 
-  const handleTrade = () => {
+  const handleTrade = async () => {
     // Perform your trade logic using accountBalance and tradeAmount
   if(tradeAmount > userData.accountBalance){
     alert("Insufficient Balance \nPlease deposit more funds")
     return
   }
 
-    upgrading(tradeAmount, userData.accountBalance).then(() => {
+   await upgrading(tradeAmount, userData.accountBalance).then(() => {
       const newAccountBalance = userData.accountBalance - tradeAmount;
       console.log(
         `Trade Executed: Account Balance after trade:  $${newAccountBalance}`
