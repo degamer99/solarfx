@@ -62,7 +62,14 @@ export default function Trade() {
           await updateDoc(userRef, {
             tradingAmount,
             accountBalance: accBal,
-          }).then(() => console.log("trade has been changed "));
+          }).then(() => {
+            alert(
+              `Trade Executed: Account Balance after trade: $${accBal}`
+            );
+
+            console.log("trade has been changed ");
+            router.push("/home");
+          });
         } catch (error) {
           console.log(error);
         }
@@ -98,11 +105,6 @@ export default function Trade() {
       console.log(
         `Trade Executed: Account Balance after trade:  $${newAccountBalance}`
       );
-
-      alert(
-        `Trade Executed: Account Balance after trade: $${newAccountBalance}`
-      );
-      router.push("/home");
     });
 
     // window.location.reload()
