@@ -16,23 +16,23 @@ const AccountTypeInfo = [
   {
     name: "Beginner a/c",
     motto: "New Into Trading ....",
-    InitialDeposit: 100,
+    InitialDeposit: 500,
     Leverage: "Up to 1:100",
-    Profits: "25%",
+    Profits: "250%",
   },
   {
     name: "Standard a/c",
     motto: "Already Into Trading ....",
-    InitialDeposit: 500,
+    InitialDeposit: 2300,
     Leverage: "Up to 1:500",
-    Profits: "50%",
+    Profits: "500%",
   },
   {
     name: "Master a/c",
     motto: "Expert In Trading ....",
-    InitialDeposit: 1000,
+    InitialDeposit: 10000,
     Leverage: "Up to 1:1000",
-    Profits: "75%",
+    Profits: "750%",
   },
 ];
 
