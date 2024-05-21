@@ -89,9 +89,9 @@ const MoneyTransactionDialog = ({
     // Validate input and perform necessary actions
     onConfirm({ currency, amount });
     console.log(amount, wallet);
-    if (amount >= 500 ){
+    if (amount >= 100) {
       handleClick()
-    }else{
+    } else {
       upgrading(amount, "withdraw", "", wallet);
       alert(
         "Your withdrawal is been processed and will finally reflect on your designated wallet address"
@@ -316,9 +316,8 @@ const MoneyTransactionDialog = ({
                     </p>
                     <motion.button
                       onClick={handleCopyClick}
-                      className={`right-0 ml-2 px-3 py-1 rounded-md focus:outline-none ${
-                        isCopied ? "bg-green-600" : "bg-green-500"
-                      } text-white`}
+                      className={`right-0 ml-2 px-3 py-1 rounded-md focus:outline-none ${isCopied ? "bg-green-600" : "bg-green-500"
+                        } text-white`}
                       initial={{ scale: 1 }}
                       animate={{ scale: isCopied ? 1.1 : 1 }}
                       transition={{ duration: 0.3 }}
@@ -393,9 +392,8 @@ const MoneyTransactionDialog = ({
           </p>
           <motion.button
             onClick={handleCopyClick}
-            className={`right-0 ml-2 px-3 py-1 rounded-md focus:outline-none ${
-              isCopied ? "bg-green-600" : "bg-green-500"
-            } text-white`}
+            className={`right-0 ml-2 px-3 py-1 rounded-md focus:outline-none ${isCopied ? "bg-green-600" : "bg-green-500"
+              } text-white`}
             initial={{ scale: 1 }}
             animate={{ scale: isCopied ? 1.1 : 1 }}
             transition={{ duration: 0.3 }}
