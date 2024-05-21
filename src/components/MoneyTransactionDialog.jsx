@@ -18,6 +18,7 @@ const MoneyTransactionDialog = ({
   address,
   information,
   Withdrawal,
+  upgrade,
   // amount,
   // setAmount,
 }) => {
@@ -271,7 +272,7 @@ const MoneyTransactionDialog = ({
             htmlFor="amount"
             className="block text-gray-700 font-bold mb-2"
           >
-            Amount
+            Amount {upgrade ? ": 4% of total profit made" : " "}
           </label>
           <input
             type="number"
@@ -460,6 +461,8 @@ const MoneyTransactionDialog = ({
           </motion.button>
         </div>
       )}
+      {upgrade ? <p className="my-3 font-bold">Please upload a clear photo of you holding your government issued Id-card</p> : <p> </p>
+      }
       <FileInput onFileChange={onFileChange} />
       <button
         onClick={() =>

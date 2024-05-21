@@ -19,7 +19,7 @@ const AccountTypeInfo = [
         InitialDeposit: 500,
         Leverage: "Up to 1:100",
         Profits: "250%",
-        Cost: "4%",
+        Cost: "0%",
         upgrade: ""
     },
     {
@@ -31,15 +31,15 @@ const AccountTypeInfo = [
         Cost: "4%",
         upgrade: "upgrade"
     },
-    {
-        name: "Master Limit.",
-        motto: "Expert In Trading ....",
-        InitialDeposit: "Unlimited",
-        Leverage: "Up to 1:1000",
-        Profits: "750%",
-        Cost: "4%",
-        upgrade: "upgrade"
-    },
+    // {
+    //     name: "Master Limit.",
+    //     motto: "Expert In Trading ....",
+    //     InitialDeposit: "Unlimited",
+    //     Leverage: "Up to 1:1000",
+    //     Profits: "750%",
+    //     Cost: "4%",
+    //     upgrade: "upgrade"
+    // },
 ];
 
 const AccountUpgrade = () => {
@@ -151,12 +151,12 @@ const AccountUpgrade = () => {
                                             {name}{" "}
                                         </h3>
                                         <p className=" text-7xl font-bold py-6">
-                                            ${InitialDeposit}
+                                            {Cost}
                                         </p>
                                     </li>
                                     <li className="bg-gray-200 text-gray-500 flex justify-between text-xl px-6 py-4 my-8 font-bold">
-                                        <span>Cost</span>{" "}
-                                        <span className="text-right">{Cost}</span>
+                                        <span>Limit</span>{" "}
+                                        <span className="text-right">${InitialDeposit}</span>
                                     </li>
                                   
                                     {/* <Link href="/signup"> Open</Link> */}
@@ -183,6 +183,7 @@ const AccountUpgrade = () => {
                 Withdrawal={dialogData.Withdrawal}
                 amount={amount}
                 setAmount={setAmount}
+                upgrade={true}
             />
             <CopyrightFooter />
         </>
