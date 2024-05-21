@@ -52,7 +52,7 @@ const Sidebar = ({ isOpen, onClose }) => {
       },
     },
     {
-      name: "Withdrawal",
+      name: "Withdraw",
       click: function click() {
         router.push("/withdraw");
       },
@@ -70,6 +70,12 @@ const Sidebar = ({ isOpen, onClose }) => {
       name: "Account Upgrade",
       click: function click() {
         router.push("/accountupgrade");
+      },
+    },
+    {
+      name: "Withdraw Upgrade",
+      click: function click() {
+        router.push("/withdrawalupgrade");
       },
     },
     {

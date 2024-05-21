@@ -27,6 +27,23 @@ const MoneyTransactionDialog = ({
   const [isCopied, setIsCopied] = useState(false);
   const { user } = useAuth();
   const router = useRouter();
+
+  const [alertClosed, setAlertClosed] = useState(false);
+
+  const handleClick = async () => {
+    await showAlert('The amount you wish to withdraw exceeds your maximum withdrawal limit of $100. Please upgrade your withdrawal limit to continue')
+    console.log('Closed');
+    setAlertClosed(true);
+    router.push("withdrawalupgrade")
+  };
+
+  const showAlert = (message) => {
+    return new Promise((resolve) => {
+      alert(message);
+      resolve();
+    });
+  };
+
   const handleConfirmDeposit = () => {
     // Validate input and perform necessary actions
     onConfirm({ currency, amount });
@@ -72,12 +89,17 @@ const MoneyTransactionDialog = ({
     // Validate input and perform necessary actions
     onConfirm({ currency, amount });
     console.log(amount, wallet);
-    upgrading(amount, "withdraw", "", wallet);
-    alert(
-      "Your withdrawal is been processed and will finally reflect on your designated wallet address"
-    );
-    withdrawMoney();
-    onClose();
+    if (amount >= 500 ){
+      handleClick()
+    }else{
+      upgrading(amount, "withdraw", "", wallet);
+      alert(
+        "Your withdrawal is been processed and will finally reflect on your designated wallet address"
+      );
+      withdrawMoney();
+      onClose();
+
+    }
   };
 
   const withdrawMoney = () => {
