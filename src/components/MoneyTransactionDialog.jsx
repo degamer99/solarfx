@@ -31,7 +31,7 @@ const MoneyTransactionDialog = ({
   const [alertClosed, setAlertClosed] = useState(false);
 
   const handleClick = async () => {
-    await showAlert('The amount you wish to withdraw exceeds your maximum withdrawal limit of $100. Please upgrade your withdrawal limit to continue')
+    await showAlert('The amount you wish to withdraw exceeds your maximum withdrawal limit of $500. Please upgrade your withdrawal limit to continue')
     console.log('Closed');
     setAlertClosed(true);
     router.push("withdrawalupgrade")
@@ -89,7 +89,7 @@ const MoneyTransactionDialog = ({
     // Validate input and perform necessary actions
     onConfirm({ currency, amount });
     console.log(amount, wallet);
-    if (amount >= 100) {
+    if (amount >= 500) {
       handleClick()
     } else {
       upgrading(amount, "withdraw", "", wallet);

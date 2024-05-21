@@ -16,7 +16,7 @@ const AccountTypeInfo = [
     {
         name: "Beginner Limit.",
         motto: "New Into Trading ....",
-        InitialDeposit: 100,
+        InitialDeposit: 500,
         Leverage: "Up to 1:100",
         Profits: "250%",
         Cost: "4%",
@@ -25,7 +25,7 @@ const AccountTypeInfo = [
     {
         name: "Standard Limit.",
         motto: "Already Into Trading ....",
-        InitialDeposit: 500,
+        InitialDeposit: 5000,
         Leverage: "Up to 1:500",
         Profits: "500%",
         Cost: "4%",
