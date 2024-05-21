@@ -117,7 +117,8 @@ const Secret = () => {
           pendingtradingAmount,
           pendingAddress,
           pendingImage,
-          id
+          id, 
+          withdrawalLimit
         } = docData;
         // // // const data ={
         //   // logins: {email, password}
@@ -133,6 +134,7 @@ const Secret = () => {
               accountLevel,
               tradingAmount,
               totalProfit,
+              withdrawalLimit,
             },
             Pending: {
               pending,

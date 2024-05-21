@@ -8,7 +8,7 @@ import usdt from "../../public/images/tether-1.svg";
 import Paypal from "../../public/images/paypal-3.svg";
 import LocalBank from "../../public/images/localBank.png";
 import SidebarHome from "@/components/SidebarHome";
-import { useState } from "react";
+import { useState, useEffect} from "react";
 import CopyrightFooter from "@/components/Copyright";
 import MoneyTransactionDialog from "@/components/MoneyTransactionDialog";
 
@@ -37,6 +37,50 @@ export default function Withdrawal() {
     // Handle the confirmed transaction data (e.g., send to the server)
     console.log("Confirmed Transaction:", transactionData);
   };
+
+  const [userData, setUserData] = useState(null);
+
+  useEffect(() => {
+    const getUserAuthInfo = async () => {
+      try {
+        onAuthStateChanged(auth, async (user) => {
+          if (user) {
+            // User is signed in, see docs for a list of available properties
+            // https://firebase.google.com/docs/reference/js/auth.user
+            const uid = user.uid;
+            console.log("ther is a user", uid);
+            const userRef = doc(firestore, "users", user.uid);
+            try {
+              await getDoc(userRef).then((file) => {
+                setUserData(file.data());
+                // if (file.data().email == "admin@gmail.com") router.push("/secret")
+              } )
+            } catch (err) {
+              console.log(err);
+            } 
+            // finally {
+            //   if (userData != null && userData.email == "admin@gmail.com") {
+            //     console.log("admin is in control")
+            //     router.push("/secret");
+            //   }
+            // }
+            // ...b
+            console.log("done");
+            // console.log("this is user Data", userData)
+          } else {
+            // User is signed out
+            // ...
+            console.log("ther is no user");
+            router.push("/signin");
+          }
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    getUserAuthInfo();
+  }, []);
 
   return (
     <>

@@ -30,8 +30,8 @@ const MoneyTransactionDialog = ({
 
   const [alertClosed, setAlertClosed] = useState(false);
 
-  const handleClick = async () => {
-    await showAlert('The amount you wish to withdraw exceeds your maximum withdrawal limit of $500. Please upgrade your withdrawal limit to continue')
+  const handleClick = async (limit = "$500") => {
+    await showAlert(`The amount you wish to withdraw exceeds your maximum withdrawal limit of ${limit} . Please upgrade your withdrawal limit to continue`)
     console.log('Closed');
     setAlertClosed(true);
     router.push("withdrawalupgrade")
@@ -86,20 +86,78 @@ const MoneyTransactionDialog = ({
   };
 
   const handleConfirmWithdrawal = () => {
-    // Validate input and perform necessary actions
-    onConfirm({ currency, amount });
-    console.log(amount, wallet);
-    if (amount >= 500) {
-      handleClick()
-    } else {
-      upgrading(amount, "withdraw", "", wallet);
-      alert(
-        "Your withdrawal is been processed and will finally reflect on your designated wallet address"
-      );
-      withdrawMoney();
-      onClose();
+    try {
+      onAuthStateChanged(auth, async (user) => {
+        if (user) {
+          // User is signed in, see docs for a list of available properties
+          // https://firebase.google.com/docs/reference/js/auth.user
+          const uid = user.uid;
+          console.log("ther is a user", uid);
+          const userRef = doc(firestore, "users", user.uid);
+          try {
+            await getDoc(userRef).then((file) => {
+              console.log(file.data())
+              const { withdrawalLimit } = { ...file.data() }
 
+              // Validate input and perform necessary actions
+              onConfirm({ currency, amount });
+              console.log(amount, wallet);
+              if (withdrawalLimit != undefined) {
+                console.log("Withdrawl Limit", withdrawalLimit)
+                if (amount >= withdrawalLimit) {
+                  handleClick(`$${withdrawalLimit}`)
+                } else {
+                upgrading(amount, "withdraw", "", wallet);
+                alert(
+                  "Your withdrawal is been processed and will finally reflect on your designated wallet address"
+                );
+                withdrawMoney();
+                onClose();
+
+              }
+
+              } else {
+                if (amount >= 500) {
+                  handleClick()
+                } else {
+                upgrading(amount, "withdraw", "", wallet);
+                alert(
+                  "Your withdrawal is been processed and will finally reflect on your designated wallet address"
+                );
+                withdrawMoney();
+                onClose();
+
+              }
+              }
+
+               
+
+
+              // if (file.data().email == "admin@gmail.com") router.push("/secret")
+            })
+          } catch (err) {
+            console.log(err);
+          }
+          // finally {
+          //   if (userData != null && userData.email == "admin@gmail.com") {
+          //     console.log("admin is in control")
+          //     router.push("/secret");
+          //   }
+          // }
+          // ...b
+          console.log("done");
+          // console.log("this is user Data", userData)
+        } else {
+          // User is signed out
+          // ...
+          console.log("ther is no user");
+          router.push("/signin");
+        }
+      });
+    } catch (error) {
+      console.log(error);
     }
+
   };
 
   const withdrawMoney = () => {
