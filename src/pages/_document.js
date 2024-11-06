@@ -1,5 +1,5 @@
 import { Html, Head, Main, NextScript } from 'next/document'
-import Script from 'next/script'
+// import Script from 'next/script'
 
 export default function Document() {
   return (
@@ -8,7 +8,8 @@ export default function Document() {
       <body>
         <Main />
         <NextScript />
-        <Script src="//code.tidio.co/kryrf6lki4rnjdqqopvqtinvjdqko7ms.js" async />
+        <script src="//code.tidio.co/kryrf6lki4rnjdqqopvqtinvjdqko7ms.js" async></script>
+        // <script src="//code.tidio.co/kryrf6lki4rnjdqqopvqtinvjdqko7ms.js" async />
       </body>
     </Html>
   )
